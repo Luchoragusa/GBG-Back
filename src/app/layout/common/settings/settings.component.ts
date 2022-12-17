@@ -26,7 +26,6 @@ export class SettingsComponent implements OnInit, OnDestroy
     layout: Layout;
     scheme: 'dark' | 'light';
     theme: string;
-    themes: Themes;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**

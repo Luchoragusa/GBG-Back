@@ -15,11 +15,11 @@ import { SearchModule } from 'app/layout/common/search/search.module';
 import { ShortcutsModule } from 'app/layout/common/shortcuts/shortcuts.module';
 import { UserModule } from 'app/layout/common/user/user.module';
 import { SharedModule } from 'app/shared/shared.module';
-import { ClassicLayoutComponent } from 'app/layout/layouts/vertical/classic/classic.component';
+import { CompactLayoutComponent } from 'app/layout/layouts/compact/compact.component';
 
 @NgModule({
     declarations: [
-        ClassicLayoutComponent
+        CompactLayoutComponent
     ],
     imports     : [
         HttpClientModule,
@@ -40,9 +40,9 @@ import { ClassicLayoutComponent } from 'app/layout/layouts/vertical/classic/clas
         SharedModule
     ],
     exports     : [
-        ClassicLayoutComponent
+        CompactLayoutComponent
     ]
 })
-export class ClassicLayoutModule
+export class CompactLayoutModule
 {
 }

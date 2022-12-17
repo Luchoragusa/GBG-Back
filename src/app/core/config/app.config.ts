@@ -16,7 +16,6 @@ export interface AppConfig
     scheme: Scheme;
     screens: Screens;
     theme: Theme;
-    themes: Themes;
 }
 
 /**
@@ -32,9 +31,9 @@ export interface AppConfig
  *
  * "Themes" are required for Tailwind to generate themes.
  */
-export const appConfig: AppConfig = {
-    layout : 'classy',
-    scheme : 'light',
+export const appConfig: AppConfig = { // Aca seteo como se va a cargar la pagina cuando se abra
+    layout : 'compact',
+    scheme : 'dark',
     screens: {
         sm: '600px',
         md: '960px',
@@ -42,30 +41,4 @@ export const appConfig: AppConfig = {
         xl: '1440px'
     },
     theme  : 'theme-default',
-    themes : [
-        {
-            id  : 'theme-default',
-            name: 'Default'
-        },
-        {
-            id  : 'theme-brand',
-            name: 'Brand'
-        },
-        {
-            id  : 'theme-teal',
-            name: 'Teal'
-        },
-        {
-            id  : 'theme-rose',
-            name: 'Rose'
-        },
-        {
-            id  : 'theme-purple',
-            name: 'Purple'
-        },
-        {
-            id  : 'theme-amber',
-            name: 'Amber'
-        }
-    ]
 };
