@@ -8,7 +8,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { FuseFullscreenModule } from '@fuse/components/fullscreen';
 import { FuseLoadingBarModule } from '@fuse/components/loading-bar';
 import { FuseNavigationModule } from '@fuse/components/navigation';
-import { LanguagesModule } from 'app/layout/common/languages/languages.module';
 import { NotificationsModule } from 'app/layout/common/notifications/notifications.module';
 import { ShortcutsModule } from 'app/layout/common/shortcuts/shortcuts.module';
 import { UserModule } from 'app/layout/common/user/user.module';
@@ -29,7 +28,6 @@ import { CompactLayoutComponent } from 'app/layout/layouts/compact/compact.compo
         FuseFullscreenModule,
         FuseLoadingBarModule,
         FuseNavigationModule,
-        LanguagesModule,
         NotificationsModule,
         ShortcutsModule,
         UserModule,
