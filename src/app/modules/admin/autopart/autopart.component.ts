@@ -10,13 +10,6 @@ export interface UserData {
   fruit: string;
 }
 
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  fruit: string;
-}
-
 /** Constants used to fill up our data base. */
 const FRUITS: string[] = [
   'blueberry',
@@ -56,7 +49,7 @@ const NAMES: string[] = [
   styleUrls: ['./autopart.component.scss']
 })
 export class AutopartComponent  implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
+  displayedColumns: string[] = ['id', 'name', "model", "carName", "anotation", "image", 'actions'];
   dataSource: MatTableDataSource<UserData>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -100,3 +93,8 @@ function createNewUser(id: number): UserData {
     fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))],
   };
 }
+
+window.onload = function() {
+  var menuButton = document.getElementById("open-menu");
+  menuButton.click();
+};
