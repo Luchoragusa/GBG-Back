@@ -1,7 +1,47 @@
 <div class="flex flex-col flex-auto min-w-0">
 
+
+  <mat-drawer-container class="flex-auto h-full bg-card dark:bg-transparent">
+
+  <!-- Drawer -->
+  <mat-drawer
+      class="w-full sm:w-128 dark:bg-gray-900"
+      [mode]="drawerMode"
+      [opened]="false"
+      [position]="'end'"
+      [disableClose]="true"
+      #matDrawer>
+      
+        <router-outlet></router-outlet>
+
+  </mat-drawer>
+
     <!-- Main -->
     <div class="flex-auto p-6 sm:p-10">
+
+                <!-- Header -->
+                <div class="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between py-8 px-6 md:px-8">
+                  <!-- Title -->
+                  <div>
+                      <div class="text-4xl font-extrabold tracking-tight leading-none">Respuestos</div>
+                      <div class="ml-0.5 font-medium text-secondary">
+                      </div>
+                  </div>
+                  <!-- Actions -->
+                  <div class="mt-4 sm:mt-0">
+                      <!-- Add autopart button -->
+                      <button
+                          class="ml-3"
+                          mat-flat-button
+                          [color]="'primary'"
+                          (click)="matDrawer.toggle()">
+                          <span class="ml-2 mr-1">Agregar un repuesto</span>
+                      </button>
+                  </div>
+              </div>
+
+
+      <!-- Tabla de repuestos  -->
 
       <mat-form-field>
         <input matInput (keyup)="applyFilter($event)" placeholder="Inyectores" #input>
@@ -83,6 +123,8 @@
       </div>
 
     </div>
+
+  </mat-drawer-container>
 
 </div>
 

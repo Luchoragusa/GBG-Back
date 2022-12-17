@@ -1,7 +1,10 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
+import { MatDrawer } from '@angular/material/sidenav';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AutopartService } from 'app/core/autopart/autopart.service';
 
 export interface UserData {
   id: string;
@@ -51,11 +54,19 @@ const NAMES: string[] = [
 export class AutopartComponent  implements AfterViewInit {
   displayedColumns: string[] = ['id', 'name', "model", "carName", "anotation", "image", 'actions'];
   dataSource: MatTableDataSource<UserData>;
+  drawerMode: 'side' | 'over';
+  
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('matDrawer', {static: true}) matDrawer: MatDrawer;
 
-  constructor() {
+  constructor(
+    private _router: Router,
+    private _activatedRoute: ActivatedRoute,
+    private _changeDetectorRef: ChangeDetectorRef,
+    private _autoPartService: AutopartService,
+  ) {
     // Create 100 users
     const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
 
@@ -76,6 +87,7 @@ export class AutopartComponent  implements AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
 }
 
 /** Builds and returns a new User. */
