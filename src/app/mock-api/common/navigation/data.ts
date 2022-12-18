@@ -3,19 +3,12 @@ import { FuseNavigationItem } from '@fuse/components/navigation';
 
 export const compactNavigation: FuseNavigationItem[] = [
     {
-        id   : 'example',
-        title: 'Example',
+        id   : 'dashboard',
+        title: 'Dashboard',
         type : 'basic',
         icon : 'heroicons_outline:home',
-        link : '/example'
+        link : '/dashboard'
     },
-    // {
-    //     id   : 'home',
-    //     title: 'Home',
-    //     type : 'basic',
-    //     icon : 'heroicons_outline:home',
-    //     link : '/home'
-    // },
     {
         id   : 'autopart',
         title: 'Repuestos',
@@ -24,6 +17,25 @@ export const compactNavigation: FuseNavigationItem[] = [
         link : '/autopart'
     },
 ];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

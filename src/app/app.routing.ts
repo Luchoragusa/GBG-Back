@@ -10,14 +10,14 @@ import { InitialDataResolver } from 'app/app.resolvers';
 export const appRoutes: Route[] = [
 
     // Redirect empty path to '/example'
-    {path: '', pathMatch : 'full', redirectTo: 'example'},
+    {path: '', pathMatch : 'full', redirectTo: 'dashboard'},
 
     // Redirect signed in user to the '/example'
     //
     // After the user signs in, the sign in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
-    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'example'},
+    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'dashboard'},
 
     // Paginas para cuando no se esta logeado
     {
@@ -60,7 +60,7 @@ export const appRoutes: Route[] = [
             layout: 'empty'
         },
         children   : [
-            {path: 'home', loadChildren: () => import('app/modules/landing/home/home.module').then(m => m.LandingHomeModule)},
+            // {path: 'home', loadChildren: () => import('app/modules/landing/home/home.module').then(m => m.LandingHomeModule)},
         ]
     },
 
@@ -74,7 +74,7 @@ export const appRoutes: Route[] = [
             initialData: InitialDataResolver,
         },
         children   : [
-            {path: 'example', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
+            {path: 'dashboard', loadChildren: () => import('app/modules/admin/dashboard/dashboard.module').then(m => m.DashboardModule)},
             {path: 'autopart', loadChildren: () => import('app/modules/admin/autopart/autopart.module').then(m => m.AutopartModule)},
         ]
     }

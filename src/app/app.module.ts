@@ -13,6 +13,7 @@ import { LayoutModule } from 'app/layout/layout.module';
 import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import { AutopartComponent } from './modules/admin/autopart/autopart.component';
+import { DashboardComponent } from './modules/admin/dashboard/dashboard.component';
 
 // Angular Material Modules
 import {MatTableModule} from '@angular/material/table';
@@ -25,6 +26,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatTabsModule} from '@angular/material/tabs';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
@@ -36,6 +38,7 @@ const routerConfig: ExtraOptions = {
     declarations: [
         AppComponent,
         AutopartComponent,
+        DashboardComponent,
     ],
     imports     : [
         BrowserModule,
@@ -68,7 +71,8 @@ const routerConfig: ExtraOptions = {
         MatSidenavModule,
         MatDividerModule,
         ReactiveFormsModule,
-        FormsModule
+        FormsModule,
+        MatTabsModule
     ],
     bootstrap   : [
         AppComponent
