@@ -11,8 +11,9 @@
       [position]="'end'"
       [disableClose]="true"
       #matDrawer>
-      
-        <router-outlet></router-outlet>
+
+          <button mat-raised-button color="warn" (click)="matDrawer.toggle()">Toggle</button>
+          <router-outlet></router-outlet>
 
   </mat-drawer>
 
@@ -34,7 +35,10 @@
                           class="ml-3"
                           mat-flat-button
                           [color]="'primary'"
-                          (click)="matDrawer.toggle()">
+                          (click)="matDrawer.toggle()"
+                          [disabled]="false"
+                          [routerLink]="'/form'">
+                          
                           <span class="ml-2 mr-1">Agregar un repuesto</span>
                       </button>
                   </div>

@@ -5,6 +5,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import { MatDrawer } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutopartService } from 'app/core/autopart/autopart.service';
+import { FormPartComponent } from './form-part/form-part.component';
 
 export interface UserData {
   id: string;
@@ -87,6 +88,7 @@ export class AutopartComponent  implements AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
 
 }
 

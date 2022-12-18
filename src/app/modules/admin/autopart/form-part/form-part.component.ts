@@ -20,12 +20,6 @@ export class FormPartComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
-            // Open the drawer
-            this._autopartComponent.matDrawer.open();
-
-            console.log("Estoy en el onInit del form-part")
-
             // Create the task form
             this.autoPartForm = this._formBuilder.group({
                 id       : [''],
