@@ -1,0 +1,11 @@
+<ng-container *ngIf="isImage()">
+    <div mat-dialog-content>
+        <img [src]="data.data" class="img-fluid"/>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!isImage()">
+    <div mat-dialog-content>
+        <pre>{{data.data}}</pre>
+    </div>
+</ng-container>
