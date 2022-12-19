@@ -27,6 +27,13 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatTabsModule} from '@angular/material/tabs';
+import { FuseDrawerModule } from '@fuse/components/drawer';
+import {MatIconModule} from '@angular/material/icon';
+import {MatSelectModule} from '@angular/material/select';
+import { CarBrandComponent } from './modules/admin/car-brand/car-brand.component';
+import { PartBrandComponent } from './modules/admin/part-brand/part-brand.component';
+import { FuseAlertModule } from '@fuse/components/alert';
+
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
@@ -39,6 +46,8 @@ const routerConfig: ExtraOptions = {
         AppComponent,
         AutopartComponent,
         DashboardComponent,
+        CarBrandComponent,
+        PartBrandComponent,
     ],
     imports     : [
         BrowserModule,
@@ -72,7 +81,11 @@ const routerConfig: ExtraOptions = {
         MatDividerModule,
         ReactiveFormsModule,
         FormsModule,
-        MatTabsModule
+        MatTabsModule,
+        FuseDrawerModule,
+        MatIconModule,
+        MatSelectModule,
+        FuseAlertModule
     ],
     bootstrap   : [
         AppComponent

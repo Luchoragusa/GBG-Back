@@ -16,6 +16,20 @@ export const compactNavigation: FuseNavigationItem[] = [
         icon : 'heroicons_outline:search',
         link : '/autopart'
     },
+    {
+        id   : 'part-brand',
+        title: 'Marcas',
+        type : 'basic',
+        icon : 'settings',
+        link : '/part-brand'
+    },
+    {
+        id   : 'car-brand',
+        title: 'Autos',
+        type : 'basic',
+        icon : 'directions_car_filled',
+        link : '/car-brand'
+    }
 ];
 
 
