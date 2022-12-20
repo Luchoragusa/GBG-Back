@@ -1,3 +1,8 @@
+
+<ng-container *ngIf="getViewAlert()">
+  <app-alert [message] = "dialogMessage" ></app-alert>
+</ng-container>
+
 <fuse-alert
     [appearance]="'soft'"
     [dismissible]="true"

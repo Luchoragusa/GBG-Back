@@ -182,8 +182,8 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
 
   // Metodo q guarda el formulario
   saveAutoPart() {
-    // this.toggleDrawer(false);
-    // this.dismissed = false;
+    this.toggleDrawer(false);
+    this.dismissed = false;
     this.autoPartForm.controls['partType'].setValue(this.selectedPartType); // <-- Set Value formControl for select option value (marcaRepuesto)
     this.autoPartForm.controls['partBrand'].setValue(this.selectedPartBrand); // <-- Set Value formControl for select option value (marcaRepuesto)
     this.autoPartForm.controls['carBrand'].setValue(this.selectedCarBrand); // <-- Set Value formControl for select option value (marcaAuto)

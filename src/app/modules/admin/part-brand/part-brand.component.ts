@@ -3,7 +3,6 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { PartBrand } from 'app/core/part-brand/part-brand';
 import { PartBrandService } from 'app/core/part-brand/parbrand.service';
 
@@ -21,6 +20,9 @@ export class PartBrandComponent implements AfterViewInit, OnInit {
   sideTittle: string = 'Agregar marca de repuesto';
   configForm: FormGroup;
   dismissed:boolean = true;
+  viewAlert:boolean = false;
+
+  dialogMessage: string = 'Esta seguro que desea eliminarla ? <span class="font-medium">Al eliminarla se borraran todos los repuestos vinculados con este marca.</span>';
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -28,7 +30,6 @@ export class PartBrandComponent implements AfterViewInit, OnInit {
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _fuseConfirmationService: FuseConfirmationService,
     private _partBrandService: PartBrandService,
   ) {
   }
@@ -42,29 +43,6 @@ export class PartBrandComponent implements AfterViewInit, OnInit {
     // Get all de part types
     const partBrands = this._partBrandService.getPartBrands();
     this.dataSource = new MatTableDataSource(partBrands)
-    
-    // Parametro del dialog
-    this.configForm = this._formBuilder.group({
-      title      : 'Eliminar',
-      message    : 'Esta seguro que desea eliminarla ? <span class="font-medium">Al eliminarla se borraran todos los repuestos vinculados con esta marca.</span>',
-      icon       : this._formBuilder.group({
-          show : true,
-          name : 'heroicons_outline:exclamation',
-          color: 'warn'
-      }),
-      actions    : this._formBuilder.group({
-          confirm: this._formBuilder.group({
-              show : true,
-              label: 'Eliminar',
-              color: 'warn'
-          }),
-          cancel : this._formBuilder.group({
-              show : true,
-              label: 'Cancelar'
-          })
-      }),
-      dismissible: true
-    });
   }
 
   ngAfterViewInit() {
@@ -97,14 +75,14 @@ export class PartBrandComponent implements AfterViewInit, OnInit {
     }
   }
 
-  delete(name : string) {
-    console.log(name);
-        // Open the dialog and save the reference of it
-        const dialogRef = this._fuseConfirmationService.open(this.configForm.value);
+  delete(data : any) {
+    this.viewAlert = true; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
 
-        // Subscribe to afterClosed from the dialog reference
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(result);
-        });
+    // Depues tengo q hacer q se ponga en false, sino no abre mas el dialog
+    // this.viewAlert = false;
+  }
+
+  getViewAlert(){
+    return this.viewAlert;
   }
 }
