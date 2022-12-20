@@ -72,7 +72,7 @@
           <!-- drawer -->
           <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
             <mat-label>Stock</mat-label>
-            <input matInput type="text" value = "10" readonly>
+            <input matInput type="text" value = "{{editObject.stock}}" readonly>
           </mat-form-field>
 
           <mat-divider class="mt-6 mb-8"></mat-divider>
@@ -86,7 +86,7 @@
           <mat-label>Tipo de repuesto</mat-label>
           <mat-select [(value)]="selectedPartType">
             <mat-option></mat-option>
-            <mat-option [value]="option.value" *ngFor="let option of partTypes">{{ option.name }}</mat-option>
+            <mat-option [value]="option.name" *ngFor="let option of partTypes">{{ option.name }}</mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -95,14 +95,14 @@
           <mat-label>Marca del repuesto</mat-label>
           <mat-select [(value)]="selectedPartBrand">
             <mat-option></mat-option>
-            <mat-option [value]="option.value" *ngFor="let option of partBrands">{{ option.name }}</mat-option>
+            <mat-option [value]="option.name" *ngFor="let option of partBrands">{{ option.name }}</mat-option>
           </mat-select>
         </mat-form-field>
 
         <!-- partModel -->
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Modelo del repuesto</mat-label>
-          <input matInput type="text" placeholder="ME7.4.9" formControlName = "partModel">
+          <input matInput type="text" placeholder="ME7.4.9" formControlName = "partModel" value="editObject.partModel">
         </mat-form-field>
 
         <!-- carBrand -->
@@ -110,14 +110,14 @@
           <mat-label>Marca de auto</mat-label>
           <mat-select [(value)]="selectedCarBrand">
             <mat-option></mat-option>
-            <mat-option [value]="option.value" *ngFor="let option of carBrands">{{ option.name }}</mat-option>
+            <mat-option [value]="option.name" *ngFor="let option of carBrands">{{ option.name }}</mat-option>
           </mat-select>
         </mat-form-field>
 
         <!-- drawer -->
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Cajon</mat-label>
-          <input matInput type="text" placeholder="1" formControlName = "drawer">
+          <input matInput type="number" placeholder="1" formControlName = "drawer">
         </mat-form-field>
         
         <!-- description -->
@@ -129,7 +129,9 @@
           </mat-hint>
         </mat-form-field>
 
-        <input (change)="onChange($event)" type="file" formControlName = "image">
+        <ng-container *ngIf="!mode()">
+          <input (change)="onChange($event)" type="file" formControlName = "image">
+        </ng-container>
 
         <!-- Preview de la imagen, renderiza cuando se subio algun archivo -->
         <ng-container *ngIf="getBase64()">
