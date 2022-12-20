@@ -5,16 +5,8 @@ import {MatTableDataSource} from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ShowdialogComponent } from './showdialog/showdialog.component';
-
-export interface PartData {
-  id: string;
-  partBrand: string;
-  modelPart: string;
-  carBrand: string;
-  drawer: number;
-  description: string;
-  stock: number;
-}
+import { Autopart } from 'app/core/autopart/autopart';
+import { AutopartService } from 'app/core/autopart/autopart.service';
 
 /** Constants used to fill up our data base. */
 const carnames: string[] = [
@@ -52,26 +44,34 @@ interface Food {
 })
 export class AutopartComponent  implements AfterViewInit, OnInit {
 
-  marcaRepuesto: Food[] = [
+  partBrand: Food[] = [
     {value: 'steak-0', viewValue: 'Bosch'},
     {value: 'pizza-1', viewValue: 'Magneti Marelli'},
     {value: 'tacos-2', viewValue: 'Delphi'},
     {value: 'tacos-3', viewValue: 'Valeo'},
 
   ];
-  selectedmarcaRepuesto = this.marcaRepuesto[2].value;
+  selectedPartBrand = this.partBrand[1].value;
 
-  marcaAuto: Food[] = [
+  carBrand: Food[] = [
     {value: 'steak-0', viewValue: 'Volvo'},
     {value: 'pizza-1', viewValue: 'BMW'},
     {value: 'tacos-2', viewValue: 'Mercedes'},
     {value: 'tacos-3', viewValue: 'Audi'},
   ];
-  selectedmarcaAuto = this.marcaAuto[2].value;
+  selectedCarBrand = this.carBrand[1].value;
+
+  partType: Food[] = [
+    {value: 'steak-0', viewValue: 'Motor'},
+    {value: 'pizza-1', viewValue: 'Frenos'},
+    {value: 'tacos-2', viewValue: 'Suspension'},
+    {value: 'tacos-3', viewValue: 'Electrico'},
+  ];
+  selectedPartType = this.partType[1].value;
 
 
-  displayedColumns: string[] = ['id', 'name', "model", "carName", "stock", "drawer", "description", "image", 'actions'];
-  dataSource: MatTableDataSource<PartData>;
+  displayedColumns: string[] = ['id', 'partType', 'partBrand', "partModel", "carBrand", "stock", "drawer", "description", "image", 'actions'];
+  dataSource: MatTableDataSource<Autopart>;
   drawerMode: 'side' | 'over';
   autoPartForm !: FormGroup;
   dismissed: boolean = true;
@@ -79,6 +79,7 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
   configForm: FormGroup;
   sideTittle: string = 'Agregar repuesto';
   isEditAutoPart: boolean = false;
+  imageBase64 : string = null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -86,6 +87,7 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private dialog: MatDialog,
+    private _autopartService: AutopartService
   ) {
     // Create 100 users
     const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
@@ -97,13 +99,13 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
     // Create the task form
     this.autoPartForm = this._formBuilder.group({
         id          : [''],
-        name        : [''],
-        model       : [''],
-        carName     : [''],
+        partType    : [''],
+        partBrand   : [''],
+        partModel   : [''],
+        carBrand    : [''],
         description : [''],
         drawer      : [''],
         image       : ['']
-
     });
       // Parametro del dialog
       this.configForm = this._formBuilder.group({
@@ -146,6 +148,7 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
   // Metodo q muestra la imagen en el dialog
 
   viewImage(image : string) {
+    console.log(image);
     this.dialog.open(ShowdialogComponent, {
       data: {
         type: 'image',
@@ -156,7 +159,7 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
 
   // Metodo q muestra la descripcion en el dialog
 
-  viewDescription(autopart : PartData) {
+  viewDescription(autopart : Autopart) {
     const description = autopart.description;
     this.dialog.open(ShowdialogComponent, {
       data: {
@@ -175,13 +178,16 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
     }
     this.drawerOpened = !this.drawerOpened;
     this.autoPartForm.reset();
-    console.log("En toggleDrawer " + this.isEditAutoPart);
   }
 
   // Metodo q guarda el formulario
   saveAutoPart() {
-    this.toggleDrawer(false);
-    this.dismissed = false;
+    // this.toggleDrawer(false);
+    // this.dismissed = false;
+    this.autoPartForm.controls['partType'].setValue(this.selectedPartType); // <-- Set Value formControl for select option value (marcaRepuesto)
+    this.autoPartForm.controls['partBrand'].setValue(this.selectedPartBrand); // <-- Set Value formControl for select option value (marcaRepuesto)
+    this.autoPartForm.controls['carBrand'].setValue(this.selectedCarBrand); // <-- Set Value formControl for select option value (marcaAuto)
+    console.log(this.autoPartForm.value);
   }
 
   // Metodo para eidtar un repuesto
@@ -193,18 +199,37 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
   mode(){
     return this.isEditAutoPart;
   }
+
+  // Metodo para subir una imagen
+
+  onChange(event: any) {
+    const file = event.target.files[0];
+
+    this._autopartService.extraerBase64(file).subscribe((res: any) => {
+      this.imageBase64 = res;
+      console.log(this.imageBase64);
+      this.autoPartForm.get('image')?.setValue(this.imageBase64); // <-- Set Value formControl
+    });
+  }
+
+  // Metodo para obtener el base 64 de la imagen
+  getBase64() {
+    return this.imageBase64;
+  }
 }
 
 /** Builds and returns a new User. */
-function createNewUser(id: number): PartData {
+function createNewUser(id: number): Autopart {
 
   return {
     id: id.toString(),
+    partType: "Motor",
     partBrand: partnames[Math.round(Math.random() * (partnames.length - 1))],
-    modelPart: "Me796",
+    partModel: "Me796",
     carBrand: carnames[Math.round(Math.random() * (carnames.length - 1))],
     drawer: Math.round(Math.random() * 100),
     description: "Peugeot 206/207 Motor 1.4 8v o 1.6 16v",
     stock: Math.round(Math.random() * 100),
+    image: "https://www.mercadolibre.com.ar/jms/mla/lgz/msl/slideshow/MLA-911000-MLA41010000001_092020-O.webp"
   };
 }

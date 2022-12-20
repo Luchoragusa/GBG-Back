@@ -22,7 +22,7 @@
 
     <form  
       class="flex flex-col flex-auto p-6 pt-10 sm:p-8 sm:pt-10 overflow-y-auto"
-      [formGroup]="autoPartForm" >
+      [formGroup]="autoPartForm">
       
       <!-- Header del sidenav -->
 
@@ -77,48 +77,65 @@
 
         <!-- Fin Botones -->
 
-        <!-- name -->
+        <!-- typePart -->
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
-          <mat-label>Marca del repuesto</mat-label>
-          <mat-select [(value)]="selectedmarcaRepuesto">
+          <mat-label>Tipo de repuesto</mat-label>
+          <mat-select [(value)]="selectedPartType">
             <mat-option></mat-option>
-            <mat-option [value]="option.value" *ngFor="let option of marcaRepuesto">{{ option.viewValue }}</mat-option>
+            <mat-option [value]="option.value" *ngFor="let option of partType">{{ option.viewValue }}</mat-option>
           </mat-select>
         </mat-form-field>
 
-
-        <!-- model -->
+        <!-- partBrand -->
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
-          <mat-label>Modelo del repuesto</mat-label>
-          <input matInput type="text" placeholder="ME7.4.9">
+          <mat-label>Marca del repuesto</mat-label>
+          <mat-select [(value)]="selectedPartBrand">
+            <mat-option></mat-option>
+            <mat-option [value]="option.value" *ngFor="let option of partBrand">{{ option.viewValue }}</mat-option>
+          </mat-select>
         </mat-form-field>
 
-        <!-- carName -->
+        <!-- partModel -->
+        <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
+          <mat-label>Modelo del repuesto</mat-label>
+          <input matInput type="text" placeholder="ME7.4.9" formControlName = "partModel">
+        </mat-form-field>
+
+        <!-- carBrand -->
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Marca de auto</mat-label>
-          <mat-select [(value)]="selectedmarcaAuto">
+          <mat-select [(value)]="selectedCarBrand">
             <mat-option></mat-option>
-            <mat-option [value]="option.value" *ngFor="let option of marcaAuto">{{ option.viewValue }}</mat-option>
+            <mat-option [value]="option.value" *ngFor="let option of carBrand">{{ option.viewValue }}</mat-option>
           </mat-select>
         </mat-form-field>
 
         <!-- drawer -->
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Cajon</mat-label>
-          <input matInput type="text" placeholder="1">
+          <input matInput type="text" placeholder="1" formControlName = "drawer">
         </mat-form-field>
         
         <!-- description -->
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Descripcion</mat-label>
-          <input matInput #message maxlength="256" placeholder="Ej: Peugeot 206/207 Motor 1.4 8v o 1.6 16v">
+          <input matInput #message maxlength="256" placeholder="Ej: Peugeot 206/207 Motor 1.4 8v o 1.6 16v" formControlName = "description">
           <mat-hint>
             {{message.value.length}} / 256 <!-- Esto es para que se vea el contador de caracteres -->
           </mat-hint>
         </mat-form-field>
 
-        <button mat-raised-button>Subir imagen</button>
+        <input (change)="onChange($event)" type="file">
 
+        <!-- <button mat-raised-button>Subir imagen</button> -->
+
+        <!-- Preview de la imagen, renderiza cuando se subio algun archivo -->
+        <ng-container *ngIf="getBase64()">
+          <button mat-icon-button (click)="viewImage(getBase64())">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </ng-container>
+        
         <br>
 
         <div mat-dialog-actions [align]="'end'">
@@ -169,20 +186,26 @@
           <td mat-cell *matCellDef="let row"> {{row.id}} </td>
         </ng-container>
 
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
+        <!-- Part Type Column -->
+        <ng-container matColumnDef="partType">
+          <th mat-header-cell *matHeaderCellDef>Tipo</th>
+          <td mat-cell *matCellDef="let row"> {{row.partType}} </td>
+        </ng-container>
+
+        <!-- Part Brand Column -->
+        <ng-container matColumnDef="partBrand">
           <th mat-header-cell *matHeaderCellDef>Marca</th>
           <td mat-cell *matCellDef="let row"> {{row.partBrand}} </td>
         </ng-container>
     
-        <!-- Model Column -->
-        <ng-container matColumnDef="model">
+        <!-- Part Model Column -->
+        <ng-container matColumnDef="partModel">
           <th mat-header-cell *matHeaderCellDef>Modelo</th>
-          <td mat-cell *matCellDef="let row"> {{row.modelPart}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.partModel}} </td>
         </ng-container>
     
-        <!-- Car Name Column -->
-        <ng-container matColumnDef="carName">
+        <!-- Car Brand Column -->
+        <ng-container matColumnDef="carBrand">
           <th mat-header-cell *matHeaderCellDef>Marca de auto</th>
           <td mat-cell *matCellDef="let row"> {{row.carBrand}} </td>
         </ng-container>

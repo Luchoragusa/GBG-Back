@@ -34,7 +34,6 @@ import { CarBrandComponent } from './modules/admin/car-brand/car-brand.component
 import { PartBrandComponent } from './modules/admin/part-brand/part-brand.component';
 import { FuseAlertModule } from '@fuse/components/alert';
 
-
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
     scrollPositionRestoration: 'enabled',
