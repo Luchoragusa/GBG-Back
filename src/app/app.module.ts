@@ -33,6 +33,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { CarBrandComponent } from './modules/admin/car-brand/car-brand.component';
 import { PartBrandComponent } from './modules/admin/part-brand/part-brand.component';
 import { FuseAlertModule } from '@fuse/components/alert';
+import { PartTypeComponent } from './modules/admin/part-type/part-type.component';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
@@ -47,6 +48,7 @@ const routerConfig: ExtraOptions = {
         DashboardComponent,
         CarBrandComponent,
         PartBrandComponent,
+        PartTypeComponent,
     ],
     imports     : [
         BrowserModule,

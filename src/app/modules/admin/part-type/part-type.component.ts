@@ -1,54 +1,53 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import { MatDrawer } from '@angular/material/sidenav';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { FuseAlertService } from '@fuse/components/alert';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { CarBrand } from 'app/core/car-brand/Car-brand';
-import { CarBrandService } from 'app/core/car-brand/carbrand.service';
+import { PartypeService } from 'app/core/part-type/partype.service';
+import { PartType } from 'app/core/part-type/part-type';
+
 
 @Component({
-  selector: 'app-car-brand',
-  templateUrl: './car-brand.component.html',
-  styleUrls: ['./car-brand.component.scss']
+  selector: 'app-part-type',
+  templateUrl: './part-type.component.html',
+  styleUrls: ['./part-type.component.scss']
 })
+export class PartTypeComponent implements AfterViewInit, OnInit {
 
-export class CarBrandComponent implements AfterViewInit, OnInit {
   displayedColumns: string[] = ['id', 'name', 'actions'];
-  dataSource: MatTableDataSource<CarBrand>;
-  drawerMode: 'side' | 'over';
-  carBrandForm !: FormGroup;
-  configForm: FormGroup;
+  dataSource: MatTableDataSource<PartType>;
+  partTypeForm !: FormGroup;
   drawerOpened: boolean;
-  dismissed: boolean = true;
-  sideTittle: string = 'Agregar marca de auto';
+  sideTittle: string = 'Agregar tipo de repuesto';
+  configForm: FormGroup;
+  dismissed:boolean = true;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('settingsDrawer', {static: true}) settingsDrawer: MatDrawer;
 
   constructor(
     private _formBuilder: FormBuilder,
     private _fuseConfirmationService: FuseConfirmationService,
-    private _carBrandService: CarBrandService,
-  ) {
+    private _partTypeService: PartypeService
+  ) {    
   }
   ngOnInit(): void {
-    // Create the car brand form
-    this.carBrandForm = this._formBuilder.group({
+    // Create the task form
+    this.partTypeForm = this._formBuilder.group({
         id          : [''],
         name        : [''],
     });
-
-    // Get all de car brands
-    const partTypes = this._carBrandService.getCarBrands();
-    this.dataSource = new MatTableDataSource(partTypes)
+    
+    // Get all de part types
+    const partTypes = this._partTypeService.getPartTypes();
+    this.dataSource = new MatTableDataSource(partTypes);
 
     // Parametro del dialog
     this.configForm = this._formBuilder.group({
       title      : 'Eliminar',
-      message    : 'Esta seguro que desea eliminarla ? <span class="font-medium">Al eliminarla se borraran todos los repuestos vinculados con esta marca.</span>',
+      message    : 'Esta seguro que desea eliminarlo ? <span class="font-medium">Al eliminarlo se borraran todos los repuestos vinculados con este tipo.</span>',
       icon       : this._formBuilder.group({
           show : true,
           name : 'heroicons_outline:exclamation',
@@ -83,20 +82,20 @@ export class CarBrandComponent implements AfterViewInit, OnInit {
     }
   }
 
-  toggleDrawer() {
-    this.drawerOpened = !this.drawerOpened;
-    if (!this.drawerOpened) {
-      this.sideTittle = "Agregar marca de auto";
-    }
+  savePartBrand(){
+    this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
   }
 
   edit(){
-    this.sideTittle = "Editar marca de auto";
+    this.sideTittle = "Editar tipo de repuesto";
     this.toggleDrawer();
   }
 
-  saveCarBrand(){
-    this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
+  toggleDrawer() {
+    this.drawerOpened = !this.drawerOpened;
+    if (!this.drawerOpened) {
+      this.sideTittle = "Agregar tipo de repuesto";
+    }
   }
 
   delete(name : string) {

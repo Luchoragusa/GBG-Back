@@ -17,15 +17,22 @@ export const compactNavigation: FuseNavigationItem[] = [
         link : '/autopart'
     },
     {
+        id   : 'part-type',
+        title: 'Tipos de repuestos',
+        type : 'basic',
+        icon : 'settings',
+        link : '/part-type'
+    },
+    {
         id   : 'part-brand',
-        title: 'Marcas',
+        title: 'Marcas de repuestos',
         type : 'basic',
         icon : 'settings',
         link : '/part-brand'
     },
     {
         id   : 'car-brand',
-        title: 'Autos',
+        title: 'Marcas de Autos',
         type : 'basic',
         icon : 'directions_car_filled',
         link : '/car-brand'
