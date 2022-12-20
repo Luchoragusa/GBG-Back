@@ -85,6 +85,7 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
     private _partBrandService: PartBrandService
   ) {
   }
+  
   ngOnInit(): void {
     // Create the task form
     this.autoPartForm = this._formBuilder.group({
