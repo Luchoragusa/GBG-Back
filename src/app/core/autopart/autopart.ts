@@ -1,6 +1,11 @@
 export interface Autopart {
     id: string;
-    name: string;
-    email: string;
-    avatar?: string;
+    partType : string;
+    partBrand: string;
+    partModel: string;
+    carBrand: string;
+    stock: number;
+    drawer: number;
+    description: string;
+    image: string;
 }
