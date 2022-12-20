@@ -14,35 +14,6 @@ import { CarBrand } from 'app/core/car-brand/car-brand';
 import { PartBrand } from 'app/core/part-brand/part-brand';
 import { PartBrandService } from 'app/core/part-brand/parbrand.service';
 
-/** Constants used to fill up our data base. */
-const carnames: string[] = [
-  'BMW',
-  'Mercedes',
-  'Audi',
-  'Volkswagen',
-  'Porsche',
-  'Ferrari',
-  'Lamborghini',
-  'Maserati',
-  'Alfa Romeo',
-  'Ford',
-  'Chevrolet',
-  'Dodge',
-  'Jeep',
-];
-
-const partnames: string[] = [
-  'Bosh',
-  'Delphi',
-  'Denso',
-  'Magnetti Marelli',
-];
-
-interface Food {
-  value: string;
-  viewValue: string;
-}
-
 @Component({
   selector: 'app-autopart',
   templateUrl: './autopart.component.html',
