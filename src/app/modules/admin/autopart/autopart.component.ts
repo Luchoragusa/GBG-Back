@@ -77,7 +77,7 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
   dismissed: boolean = true;
   drawerOpened: boolean;
   configForm: FormGroup;
-  sideTittle: string = 'Agregar Marca de Auto';
+  sideTittle: string = 'Agregar repuesto';
   isEditAutoPart: boolean = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
