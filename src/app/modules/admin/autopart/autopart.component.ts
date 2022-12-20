@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ShowdialogComponent } from './showdialog/showdialog.component';
 import { Autopart } from 'app/core/autopart/autopart';
@@ -47,6 +47,20 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  // Filtros
+
+  partTypeFilter = new FormControl('');
+  partBrandFilter = new FormControl('');
+  partModelFilter = new FormControl('');
+  carBrandFilter = new FormControl('');
+
+  filterValues = {
+    partType: '',
+    partBrand: '',
+    partModel: '',
+    carBrand: ''
+  };
+
   constructor(
     private _formBuilder: FormBuilder,
     private dialog: MatDialog,
@@ -80,20 +94,55 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
 
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(users);
+
+    // Set the filter predicates for the table
+
+    this.partTypeFilter.valueChanges
+      .subscribe(
+        partType => {
+          this.filterValues.partType = partType.toLowerCase();
+          this.dataSource.filter = JSON.stringify(this.filterValues);
+          console.log(this.dataSource.filter);
+        }
+      )
+    this.partBrandFilter.valueChanges
+      .subscribe(
+        partBrand => {
+          this.filterValues.partBrand = partBrand.toLowerCase();
+          this.dataSource.filter = JSON.stringify(this.filterValues);
+        }
+      )
+    this.partModelFilter.valueChanges
+      .subscribe(
+        partModel => {
+          this.filterValues.partModel = partModel.toLowerCase();
+          this.dataSource.filter = JSON.stringify(this.filterValues);
+        }
+      )
+    this.carBrandFilter.valueChanges
+      .subscribe(
+        carBrand => {
+          this.filterValues.carBrand = carBrand.toLowerCase();
+          this.dataSource.filter = JSON.stringify(this.filterValues);
+        }
+      )
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.dataSource.filterPredicate = this.createFilter();
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+  createFilter(): (data: any, filter: string) => boolean {
+    let filterFunction = function(data, filter): boolean {
+      let searchTerms = JSON.parse(filter);
+      return data.partType.toLowerCase().indexOf(searchTerms.partType) !== -1
+        && data.partBrand.toString().toLowerCase().indexOf(searchTerms.partBrand) !== -1
+        && data.partModel.toLowerCase().indexOf(searchTerms.partModel) !== -1
+        && data.carBrand.toLowerCase().indexOf(searchTerms.carBrand) !== -1;
     }
+    return filterFunction;
   }
 
   // Metodo q muestra la imagen en el dialog
