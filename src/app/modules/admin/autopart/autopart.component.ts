@@ -7,6 +7,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { ShowdialogComponent } from './showdialog/showdialog.component';
 import { Autopart } from 'app/core/autopart/autopart';
 import { AutopartService } from 'app/core/autopart/autopart.service';
+import { PartypeService } from 'app/core/part-type/partype.service';
+import { PartType } from 'app/core/part-type/part-type';
+import { CarBrandService } from 'app/core/car-brand/carbrand.service';
+import { CarBrand } from 'app/core/car-brand/car-brand';
+import { PartBrand } from 'app/core/part-brand/part-brand';
+import { PartBrandService } from 'app/core/part-brand/parbrand.service';
 
 /** Constants used to fill up our data base. */
 const carnames: string[] = [
@@ -43,36 +49,9 @@ interface Food {
   styleUrls: ['./autopart.component.scss']
 })
 export class AutopartComponent  implements AfterViewInit, OnInit {
-
-  partBrand: Food[] = [
-    {value: 'steak-0', viewValue: 'Bosch'},
-    {value: 'pizza-1', viewValue: 'Magneti Marelli'},
-    {value: 'tacos-2', viewValue: 'Delphi'},
-    {value: 'tacos-3', viewValue: 'Valeo'},
-
-  ];
-  selectedPartBrand = this.partBrand[1].value;
-
-  carBrand: Food[] = [
-    {value: 'steak-0', viewValue: 'Volvo'},
-    {value: 'pizza-1', viewValue: 'BMW'},
-    {value: 'tacos-2', viewValue: 'Mercedes'},
-    {value: 'tacos-3', viewValue: 'Audi'},
-  ];
-  selectedCarBrand = this.carBrand[1].value;
-
-  partType: Food[] = [
-    {value: 'steak-0', viewValue: 'Motor'},
-    {value: 'pizza-1', viewValue: 'Frenos'},
-    {value: 'tacos-2', viewValue: 'Suspension'},
-    {value: 'tacos-3', viewValue: 'Electrico'},
-  ];
-  selectedPartType = this.partType[1].value;
-
-
+  
   displayedColumns: string[] = ['id', 'partType', 'partBrand', "partModel", "carBrand", "stock", "drawer", "description", "image", 'actions'];
   dataSource: MatTableDataSource<Autopart>;
-  drawerMode: 'side' | 'over';
   autoPartForm !: FormGroup;
   dismissed: boolean = true;
   drawerOpened: boolean;
@@ -80,6 +59,18 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
   sideTittle: string = 'Agregar repuesto';
   isEditAutoPart: boolean = false;
   imageBase64 : string = null;
+  viewAlert:boolean = false;
+  
+  partTypes : PartType[];
+  selectedPartType : PartType;
+  
+  carBrands : CarBrand[];
+  selectedCarBrand : CarBrand;
+
+  partBrands : PartBrand[];
+  selectedPartBrand: PartBrand;
+
+  dialogMessage: string = 'Esta seguro que desea eliminarla ? <span class="font-medium">Al eliminarla se borraran todos los repuestos vinculados con esta marca.</span>';
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -87,13 +78,11 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private dialog: MatDialog,
-    private _autopartService: AutopartService
+    private _autopartService: AutopartService,
+    private _partypeService: PartypeService,
+    private _carBrandService: CarBrandService,
+    private _partBrandService: PartBrandService
   ) {
-    // Create 100 users
-    const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
-
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
   }
   ngOnInit(): void {
     // Create the task form
@@ -107,28 +96,22 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
         drawer      : [''],
         image       : ['']
     });
-      // Parametro del dialog
-      this.configForm = this._formBuilder.group({
-        title      : 'Eliminar',
-        message    : 'Esta seguro que desea eliminarla ? <span class="font-medium">Al eliminarla se borraran todos los repuestos vinculados con esta marca.</span>',
-        icon       : this._formBuilder.group({
-            show : true,
-            name : 'heroicons_outline:exclamation',
-            color: 'warn'
-        }),
-        actions    : this._formBuilder.group({
-            confirm: this._formBuilder.group({
-                show : true,
-                label: 'Eliminar',
-                color: 'warn'
-            }),
-            cancel : this._formBuilder.group({
-                show : true,
-                label: 'Cancelar'
-            })
-        }),
-        dismissible: true
-    });
+
+    // Get all
+    this.partTypes = this._partypeService.getPartTypes();
+    this.carBrands = this._carBrandService.getCarBrands();
+    this.partBrands = this._partBrandService.getPartBrands();
+    
+    // Form edit o create
+    this.selectedPartType = this.partTypes[1];
+    this.selectedCarBrand = this.carBrands[1];
+    this.selectedPartBrand = this.partBrands[1];
+
+    // Create 100 users
+    const users = Array.from({length: 100}, (_, k) => this.createNewUser(k + 1));
+
+    // Assign the data to the data source for the table to render
+    this.dataSource = new MatTableDataSource(users);
   }
 
   ngAfterViewInit() {
@@ -187,6 +170,7 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
     this.autoPartForm.controls['partType'].setValue(this.selectedPartType); // <-- Set Value formControl for select option value (marcaRepuesto)
     this.autoPartForm.controls['partBrand'].setValue(this.selectedPartBrand); // <-- Set Value formControl for select option value (marcaRepuesto)
     this.autoPartForm.controls['carBrand'].setValue(this.selectedCarBrand); // <-- Set Value formControl for select option value (marcaAuto)
+    this.autoPartForm.controls['image'].setValue(this.imageBase64); // <-- Set Value formControl for select option value (marcaAuto)
     console.log(this.autoPartForm.value);
   }
 
@@ -204,11 +188,8 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
 
   onChange(event: any) {
     const file = event.target.files[0];
-
     this._autopartService.extraerBase64(file).subscribe((res: any) => {
       this.imageBase64 = res;
-      console.log(this.imageBase64);
-      this.autoPartForm.get('image')?.setValue(this.imageBase64); // <-- Set Value formControl
     });
   }
 
@@ -216,20 +197,30 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
   getBase64() {
     return this.imageBase64;
   }
-}
+  delete() {
+    this.viewAlert = true; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
 
-/** Builds and returns a new User. */
-function createNewUser(id: number): Autopart {
+    // Depues tengo q hacer q se ponga en false, sino no abre mas el dialog
+    // this.viewAlert = false;
+  }
 
-  return {
-    id: id.toString(),
-    partType: "Motor",
-    partBrand: partnames[Math.round(Math.random() * (partnames.length - 1))],
-    partModel: "Me796",
-    carBrand: carnames[Math.round(Math.random() * (carnames.length - 1))],
-    drawer: Math.round(Math.random() * 100),
-    description: "Peugeot 206/207 Motor 1.4 8v o 1.6 16v",
-    stock: Math.round(Math.random() * 100),
-    image: "https://www.mercadolibre.com.ar/jms/mla/lgz/msl/slideshow/MLA-911000-MLA41010000001_092020-O.webp"
-  };
+  getViewAlert(){
+    return this.viewAlert;
+  }
+
+
+
+  createNewUser(id: number): Autopart {
+    return {
+      id: id.toString(),
+      partType: this.partTypes[Math.round(Math.random() * (this.partTypes.length - 1))].name,
+      partBrand: this.partBrands[Math.round(Math.random() * (this.partBrands.length - 1))].name,
+      partModel: "Me796",
+      carBrand: this.carBrands[Math.round(Math.random() * (this.carBrands.length - 1))].name,
+      drawer: Math.round(Math.random() * 100),
+      description: "Peugeot 206/207 Motor 1.4 8v o 1.6 16v",
+      stock: Math.round(Math.random() * 100),
+      image: "https://www.mercadolibre.com.ar/jms/mla/lgz/msl/slideshow/MLA-911000-MLA41010000001_092020-O.webp"
+    };
+  }
 }

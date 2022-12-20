@@ -35,6 +35,8 @@ import { PartBrandComponent } from './modules/admin/part-brand/part-brand.compon
 import { FuseAlertModule } from '@fuse/components/alert';
 import { PartTypeComponent } from './modules/admin/part-type/part-type.component';
 import { AlertComponent } from './modules/admin/alert/alert.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
@@ -88,7 +90,9 @@ const routerConfig: ExtraOptions = {
         FuseDrawerModule,
         MatIconModule,
         MatSelectModule,
-        FuseAlertModule
+        FuseAlertModule,
+        MatToolbarModule,
+        MatProgressBarModule
     ],
     bootstrap   : [
         AppComponent

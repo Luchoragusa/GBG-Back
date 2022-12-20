@@ -10,6 +10,8 @@ import { FuseDrawerModule } from '@fuse/components/drawer';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
 import { ShowdialogComponent } from './showdialog/showdialog.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatInputModule } from '@angular/material/input';
 
 
 const autopartRoutes: Route[] = [
@@ -33,7 +35,9 @@ const autopartRoutes: Route[] = [
     MatDividerModule,
     FuseDrawerModule,
     MatIconModule,
-    MatSelectModule
+    MatSelectModule,
+    MatToolbarModule,
+    MatInputModule
   ]
 })
 export class AutopartModule { }
