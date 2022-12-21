@@ -10,9 +10,9 @@ import { AutopartService } from 'app/core/autopart/autopart.service';
 import { PartypeService } from 'app/core/part-type/partype.service';
 import { PartType } from 'app/core/part-type/part-type';
 import { CarBrandService } from 'app/core/car-brand/carbrand.service';
-import { CarBrand } from 'app/core/car-brand/car-brand';
 import { PartBrand } from 'app/core/part-brand/part-brand';
 import { PartBrandService } from 'app/core/part-brand/parbrand.service';
+import { CarBrand } from 'app/core/car-brand/Car-brand';
 
 @Component({
   selector: 'app-autopart',
