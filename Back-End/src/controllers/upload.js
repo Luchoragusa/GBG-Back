@@ -40,7 +40,7 @@ exports.upload = upload.single('image')
 exports.createAutoPart = async (req, res, next) => {
 
     // Le seteo la ruta de la  imagen al objeto que voy a crear
-    req.body.image = req.file.path;
+    req.body.image = req.file.originalname;
 
     // Seteo null a los campos que no se reciben
     req.body.partModel = req.body.partModel || null;
