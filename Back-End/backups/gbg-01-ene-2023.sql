@@ -68,7 +68,7 @@ CREATE TABLE `CarBrands` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,7 +77,7 @@ CREATE TABLE `CarBrands` (
 
 LOCK TABLES `CarBrands` WRITE;
 /*!40000 ALTER TABLE `CarBrands` DISABLE KEYS */;
-INSERT INTO `CarBrands` VALUES (1,'Volkswagen','2023-01-01 18:55:46','2023-01-01 18:55:46'),(2,'Volkswagen','2023-01-01 22:08:11','2023-01-01 22:08:11');
+INSERT INTO `CarBrands` VALUES (1,'Volkswagen','2023-01-01 18:55:46','2023-01-01 18:55:46'),(2,'Volkswagen','2023-01-01 22:08:11','2023-01-01 22:08:11'),(3,'Volkswagen','2023-01-01 22:11:43','2023-01-01 22:11:43'),(4,'Volkswagen','2023-01-01 22:11:44','2023-01-01 22:11:44'),(5,'Volkswagen','2023-01-01 22:11:44','2023-01-01 22:11:44'),(6,'Volkswagen','2023-01-01 22:11:45','2023-01-01 22:11:45'),(7,'Volkswagen','2023-01-01 22:11:46','2023-01-01 22:11:46'),(8,'Volkswagen','2023-01-01 22:11:46','2023-01-01 22:11:46'),(9,'Volkswagen','2023-01-01 22:11:47','2023-01-01 22:11:47'),(10,'Volkswagen','2023-01-01 22:11:47','2023-01-01 22:11:47');
 /*!40000 ALTER TABLE `CarBrands` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -142,4 +142,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-01 19:08:57
+-- Dump completed on 2023-01-01 19:12:37
