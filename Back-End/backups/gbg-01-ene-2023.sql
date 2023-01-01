@@ -67,7 +67,7 @@ CREATE TABLE `CarBrands` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +76,7 @@ CREATE TABLE `CarBrands` (
 
 LOCK TABLES `CarBrands` WRITE;
 /*!40000 ALTER TABLE `CarBrands` DISABLE KEYS */;
-INSERT INTO `CarBrands` VALUES (1,'Volkswagen','2023-01-01 22:18:05','2023-01-01 22:18:05');
+INSERT INTO `CarBrands` VALUES (1,'Volkswagen','2023-01-01 22:18:05','2023-01-01 22:18:05'),(2,'Volkswagen','2023-01-01 22:21:56','2023-01-01 22:21:56'),(3,'Volkswagen','2023-01-01 22:21:57','2023-01-01 22:21:57'),(4,'Volkswagen','2023-01-01 22:21:58','2023-01-01 22:21:58'),(5,'Volkswagen','2023-01-01 22:21:58','2023-01-01 22:21:58'),(6,'Volkswagen','2023-01-01 22:21:59','2023-01-01 22:21:59'),(7,'Volkswagen','2023-01-01 22:22:00','2023-01-01 22:22:00');
 /*!40000 ALTER TABLE `CarBrands` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,7 +118,7 @@ CREATE TABLE `PartTypes` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,6 +127,7 @@ CREATE TABLE `PartTypes` (
 
 LOCK TABLES `PartTypes` WRITE;
 /*!40000 ALTER TABLE `PartTypes` DISABLE KEYS */;
+INSERT INTO `PartTypes` VALUES (1,'ECU','2023-01-01 22:22:07','2023-01-01 22:22:07'),(2,'ECU','2023-01-01 22:22:08','2023-01-01 22:22:08'),(3,'ECU','2023-01-01 22:22:08','2023-01-01 22:22:08'),(4,'ECU','2023-01-01 22:22:09','2023-01-01 22:22:09');
 /*!40000 ALTER TABLE `PartTypes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -139,4 +140,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-01 19:20:39
+-- Dump completed on 2023-01-01 19:22:32
