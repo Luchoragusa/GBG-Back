@@ -3,15 +3,13 @@ const multer=require('multer');
 
 // Filtro de archivos
 
-const fileFilter=function(req,file,cb){
+const fileFilter=function(req,file,res){
 
     const allowedTypes=["image/jpg","image/jpeg","image/png"];
 
     if(!allowedTypes.includes(file.mimetype)){
-      return cb("Tipo de archivo no permitido",false);
+      return res.status(500).json({error: "Tipo de archivo no permitido"});
     }
-
-    cb(null,true);
 }
 
 // Es donbde se guardan los archivos y el nmobre que van a tener
@@ -37,3 +35,16 @@ exports.upload = upload.single('image')
 exports.uploadFile = (req, res) => {
     res.send({ data: 'Enviar un archivo' })
 }
+
+exports.create = Model =>
+    async (req, res, next) => {
+
+        console.log(req.body);
+
+        const elemnt = await Model.create(req.body);
+        if (elemnt) {
+            return res.status(201).json({elemnt})
+        } else {
+            return res.status(404).json({'msg':'No se recibieron los datos'})
+        }
+    }
