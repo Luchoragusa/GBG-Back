@@ -18,7 +18,7 @@ const fileFilter=function(req,file,cb){
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads')
+        cb(null, './uploads')
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname);
@@ -36,4 +36,8 @@ exports.upload = upload.single('image')
 
 exports.uploadFile = (req, res) => {
     res.send({ data: 'Enviar un archivo' })
+}
+
+exports.helloWorld = (req, res) => {
+    res.send({ data: 'Hola Mundo' })
 }
