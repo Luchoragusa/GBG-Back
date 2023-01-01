@@ -17,8 +17,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         validate: {
             len: {
-                args: [3,25],
-                msg: "El modelo debe contener entre 3 a 25 caracteres"
+                args: [0,25],
+                msg: "El modelo debe contener como maximo 25 caracteres"
             }
         },
     },
@@ -27,8 +27,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         validate: {
             len: {
-                args: [3,25],
-                msg: "El serial debe contener entre 3 a 25 caracteres"
+                args: [0,25],
+                msg: "El serial debe contener como maximo 25 caracteres"
             }
         },
     },
