@@ -18,6 +18,9 @@ app.use(json());;
 //Rutas
 app.use('/', router);
 
+// Ruta publica
+app.use(express.static('./uploads'));
+
 app.use((req, res, next) => {
   res.status(404).json({
     status: '404',
