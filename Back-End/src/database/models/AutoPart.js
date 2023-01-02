@@ -72,11 +72,11 @@ module.exports = (sequelize, DataTypes) => {
 
     idCarBrand: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     idPartBrand: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     idPartType: {
         type: DataTypes.INTEGER,
