@@ -5,9 +5,6 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class AutoPart extends Model {
     static associate(models) {
-
-      AutoPart.belongsTo(models.CarBrand, {foreignKey: 'idCarBrand'});
-      AutoPart.belongsTo(models.PartBrand, {foreignKey: 'idPartBrand'});
       AutoPart.belongsTo(models.PartType, {foreignKey: 'idPartType'});
     }
   }
@@ -61,14 +58,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         validate: {
             len: {
-                args: [3,200],
+                args: [0,200],
                 msg: "La imagen debe contener como maximo 200 caracteres"
             }
         },
     },
 
 
-// Foreign Keys
+// Foreign Keys que no son FK pq son nulas
 
     idCarBrand: {
         type: DataTypes.INTEGER,

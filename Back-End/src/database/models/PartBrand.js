@@ -4,7 +4,6 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class PartBrand extends Model {
         static associate(models) {
-            PartBrand.hasMany(models.AutoPart, {foreignKey: 'idPartBrand'});
         }
     }
     PartBrand.init({
