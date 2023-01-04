@@ -19,7 +19,7 @@ app.use(json());;
 app.use('/', router);
 
 // Ruta publica
-app.use(express.static('./uploads'));
+app.use(express.static('./GBG-data/images'));
 
 app.use((req, res, next) => {
   res.status(404).json({
