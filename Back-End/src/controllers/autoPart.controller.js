@@ -66,37 +66,27 @@ exports.getAll = async (req, res, next) => {
             }
         );
 
-        var autoPartsArray = [];
+        // Recoorro el array de autoParts y le agrego los objetos de las marcas
 
-        // Seteo la url de la imagen
-        autoParts.forEach(async autoPart => {
-            autoPart.image = `${process.env.URL}/${autoPart.image}`
-            var partBrand = null;
-            var carBrand = null;
+        const autoPartsArray = await Promise.all(
+            autoParts.map(async (autoPart) => {
+                autoPart.image = `${process.env.URL}/${autoPart.image}`
 
-            if (autoPart.idPartBrand) {
-                partBrand = await getOne(PartBrand, autoPart.idPartBrand);
-            }
+                var partBrand = null;
+                var carBrand = null;
+                
+                if (autoPart.idPartBrand) {
+                    partBrand = await getOne(PartBrand, autoPart.idPartBrand);
+                }
 
-            if (autoPart.idCarBrand) {
-                carBrand = await getOne(CarBrand, autoPart.idCarBrand);
-            }
+                if (autoPart.idCarBrand) {
+                    carBrand = await getOne(CarBrand, autoPart.idCarBrand);
+                }
 
-            const aParts = {
-                id: autoPart.id,
-                partModel: autoPart.partModel,
-                serialNumber: autoPart.serialNumber,
-                description: autoPart.description,
-                image: autoPart.image,
-                partBrand: partBrand,
-                carBrand: carBrand,
-                partType: autoPart.PartType
-            }
-            
-            autoPartsArray.push(aParts);
+                return await assignation(autoPart, partBrand, carBrand);
+            })
+        );
 
-            // await res.status(200).json(autoPartsArray);
-        });
 
         await res.status(200).json(autoPartsArray);
         
@@ -111,3 +101,15 @@ getOne = async (model, id) => {
     return elemnt;
 }
     
+assignation = async (autoPart, partBrand, carBrand) => {
+    return {
+        id: autoPart.id,
+        partModel: autoPart.partModel,
+        serialNumber: autoPart.serialNumber,
+        description: autoPart.description,
+        image: autoPart.image,
+        partBrand: partBrand,
+        carBrand: carBrand,
+        partType: autoPart.PartType
+    }
+}
