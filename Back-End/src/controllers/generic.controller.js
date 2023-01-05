@@ -2,6 +2,14 @@ exports.getAll = Model =>
     async (req, res, next) => {
         const elemts = await Model.findAll()
         if (elemts) {
+
+            // Ordeno alfabeticamente por nombre
+            elemts.sort(function(a, b){
+                if(a.name < b.name) { return -1; }
+                if(a.name > b.name) { return 1; }
+                return 0;
+            })
+
             return res.status(200).json({'status':200, elemts, 'msg':'Encontrados correctamente'})
         } else {
             return res.status(404).json({'msg':'No hay datos'})
