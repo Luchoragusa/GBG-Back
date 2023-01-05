@@ -1,6 +1,6 @@
 exports.getAll = Model =>
     async (req, res, next) => {
-        const elemts = await Model.findAll()
+        const elemts = await Model.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] }})
         if (elemts) {
 
             // Ordeno alfabeticamente por nombre
@@ -19,7 +19,7 @@ exports.getAll = Model =>
 exports.getOne = Model =>
     async (req, res, next) => {
         const id = req.params.id
-        let elemnt = await Model.findOne({ where: { id: id } });
+        let elemnt = await Model.findOne({ where: { id: id }, attributes: { exclude: ['createdAt', 'updatedAt'] } });
         if (elemnt) {
             return res.status(200).json({'status':200, elemnt, 'msg':'Encontrado correctamente'})
         } else {
