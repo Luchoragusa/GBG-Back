@@ -37,10 +37,13 @@ module.exports = (sequelize, DataTypes) => {
         },
     },
     drawer: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(25),
         allowNull: false,
         validate: {
-            isInt: { msg:"El numero de cajon solo debe contener numeros" },
+            len: {
+                args: [1,10],
+                msg: "El numero de cajon debe contener como maximo 10 caracteres"
+            }
         },
     },
     description: {
