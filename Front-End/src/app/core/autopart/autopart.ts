@@ -11,17 +11,5 @@ export interface Autopart {
     stock: number;
     drawer: string;
     description: string;
-    image: string | File;
-}
-
-export interface AutopartCreate {
-    idPartType : number;
-    idPartBrand: number;
-    partModel: string;
-    idCarBrand: number;
-    serialNumber:string;
-    stock: number;
-    drawer: string;
-    description: string;
-    image: File;
+    image: string ;
 }

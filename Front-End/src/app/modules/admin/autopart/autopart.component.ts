@@ -5,7 +5,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ShowdialogComponent } from './showdialog/showdialog.component';
-import { Autopart, AutopartCreate } from 'app/core/autopart/autopart';
+import { Autopart } from 'app/core/autopart/autopart';
 import { AutopartService } from 'app/core/autopart/autopart.service';
 import { PartTypeService } from 'app/core/part-type/parttype.service';
 import { PartType } from 'app/core/part-type/part-type';
@@ -254,6 +254,9 @@ export class AutopartComponent  implements OnInit {
     
     this._autopartService.createAutoPart(formData).subscribe(
       (data: Autopart) => {
+
+        // Esto deberia hacert que se recagrgue la tabla, pero no funca
+
         // this.dataSource.data.push(data);
         // this.dataSource._updateChangeSubscription();
         this.toggleDrawer(false);
