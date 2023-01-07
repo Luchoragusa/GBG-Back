@@ -114,6 +114,12 @@
           </mat-select>
         </mat-form-field>
 
+        <!-- serialNumber -->
+        <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
+          <mat-label>Numero de serie</mat-label>
+          <input matInput type="text" placeholder="ME7.4.9" formControlName = "serialNumber" value="editObject.partModel">
+        </mat-form-field>
+
         <!-- drawer -->
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Cajon</mat-label>
@@ -175,7 +181,7 @@
       </div>
     </div>
 
-    <!-- Tabla de repuestos  -->
+    <!-- Inputs de los filtros  -->
     <div class = "container">
       <mat-form-field class = "filtros">
         <mat-label>Tipo de repuesto</mat-label>
@@ -196,8 +202,14 @@
         <mat-label>Marca del auto</mat-label>
         <input matInput [formControl]="carBrandFilter" placeholder="Volkswagen" #input>
       </mat-form-field>
+
+      <mat-form-field class = "filtros">
+        <mat-label>Numero de serie</mat-label>
+        <input matInput [formControl]="serialNumberFilter" placeholder="Volkswagen" #input>
+      </mat-form-field>
     </div> 
     
+    <!-- Tabla de repuestos  -->
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource" matSort>
     
@@ -229,6 +241,12 @@
         <ng-container matColumnDef="carBrand">
           <th mat-header-cell *matHeaderCellDef>Marca de auto</th>
           <td mat-cell *matCellDef="let row"> {{row.carBrand}} </td>
+        </ng-container>
+
+        <!-- Serial Number Column -->
+        <ng-container matColumnDef="serialNumber">
+          <th mat-header-cell *matHeaderCellDef>Numero de serie</th>
+          <td mat-cell *matCellDef="let row"> {{row.serialNumber}} </td>
         </ng-container>
 
         <!-- Drawer Column -->

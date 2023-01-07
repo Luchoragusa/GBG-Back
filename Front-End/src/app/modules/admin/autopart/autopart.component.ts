@@ -21,7 +21,7 @@ import { CarBrand } from 'app/core/car-brand/Car-brand';
 })
 export class AutopartComponent  implements AfterViewInit, OnInit {
 
-  displayedColumns: string[] = ['id', 'partType', 'partBrand', "partModel", "carBrand", "stock", "drawer", "description", "image", 'actions'];
+  displayedColumns: string[] = ['id', 'partType', 'partBrand', "partModel", "carBrand", "serialNumber", "stock", "drawer", "description", "image", 'actions'];
   dataSource: MatTableDataSource<Autopart>;
   autoPartForm !: FormGroup;
   dismissed: boolean = true;
@@ -53,12 +53,14 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
   partBrandFilter = new FormControl('');
   partModelFilter = new FormControl('');
   carBrandFilter = new FormControl('');
+  serialNumberFilter = new FormControl('');
 
   filterValues = {
     partType: '',
     partBrand: '',
     partModel: '',
-    carBrand: ''
+    carBrand: '',
+    serialNumber: ''
   };
 
   constructor(
@@ -79,9 +81,10 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
         partBrand   : [''],
         partModel   : [''],
         carBrand    : [''],
+        serialNumber: [''],
         description : [''],
         drawer      : [''],
-        image       : ['']
+        image       : [''],
     });
 
     // Get all
@@ -123,6 +126,13 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
       .subscribe(
         carBrand => {
           this.filterValues.carBrand = carBrand.toLowerCase();
+          this.dataSource.filter = JSON.stringify(this.filterValues);
+        }
+      )
+    this.serialNumberFilter.valueChanges
+      .subscribe(
+        serialNumber => {
+          this.filterValues.serialNumber = serialNumber.toLowerCase();
           this.dataSource.filter = JSON.stringify(this.filterValues);
         }
       )
