@@ -167,7 +167,8 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
       return data.partType.toLowerCase().indexOf(searchTerms.partType) !== -1
         && data.partBrand.toString().toLowerCase().indexOf(searchTerms.partBrand) !== -1
         && data.partModel.toLowerCase().indexOf(searchTerms.partModel) !== -1
-        && data.carBrand.toLowerCase().indexOf(searchTerms.carBrand) !== -1;
+        && data.carBrand.toLowerCase().indexOf(searchTerms.carBrand) !== -1
+        && data.serialNumber.toLowerCase().indexOf(searchTerms.serialNumber) !== -1;
     }
     return filterFunction;
   }
