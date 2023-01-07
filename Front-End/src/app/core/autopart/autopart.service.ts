@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'environments/environment';
 import { Observable, Subscriber } from 'rxjs';
 import { Autopart } from './autopart';
 
@@ -7,8 +9,14 @@ import { Autopart } from './autopart';
 })
 export class AutopartService {
 
-  constructor() { }
-  
+  url = environment.apiUrl + '/autoparts';
+
+  constructor(private _http: HttpClient) {}
+
+  getAutoparts(): Observable<Autopart[]> {
+    return this._http.get<Autopart[]>(this.url);
+  }
+
   // Devuelve el base 64 de una imagen
   extraerBase64(image : File) {
     return new Observable((observer) => {

@@ -1,11 +1,15 @@
+import { CarBrand } from '../car-brand/car-brand';
+import { PartType } from '../part-type/part-type';
+import { PartBrand } from '../part-brand/part-brand';
 export interface Autopart {
     id: string;
-    partType : string;
-    partBrand: string;
+    partType : PartType;
+    partBrand: PartBrand;
     partModel: string;
-    carBrand: string;
+    carBrand: CarBrand;
+    serialNumber:string;
     stock: number;
-    drawer: number;
+    drawer: string;
     description: string;
     image: string;
 }
