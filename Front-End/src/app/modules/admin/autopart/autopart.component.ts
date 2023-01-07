@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
@@ -19,9 +19,9 @@ import { CarBrand } from 'app/core/car-brand/Car-brand';
   templateUrl: './autopart.component.html',
   styleUrls: ['./autopart.component.scss']
 })
-export class AutopartComponent  implements AfterViewInit, OnInit {
+export class AutopartComponent  implements OnInit {
 
-  displayedColumns: string[] = ['partType', 'partBrand', "partModel", "carBrand", "serialNumber", "stock", "drawer", "description", "image", 'actions'];
+  displayedColumns: string[] = ['partType', 'partBrand', "carBrand", "partModel", "serialNumber", "stock", "drawer", "description", "image", 'actions'];
   dataSource: MatTableDataSource<Autopart>;
   autoPartForm !: FormGroup;
   dismissed: boolean = true;
@@ -143,30 +143,29 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
     this._parttypeService.getPartTypes().subscribe(
       (data: PartType[]) => {
         this.partTypes = data;
+        this.partTypes.unshift({id: "0", name: ""});
       }
     );
 
     this._carBrandService.getCarBrands().subscribe(
       (data: CarBrand[]) => {
         this.carBrands = data;
+        this.carBrands.unshift({id: "0", name: ""});
       }
     );
     
     this._partBrandService.getPartBrands().subscribe(
       (data: PartBrand[]) => {
         this.partBrands = data;
+        this.partBrands.unshift({id: "0", name: ""});
       }
     );
-  }
-
-  ngAfterViewInit() {
-    // this.dataSource.filterPredicate = this.createFilter();
   }
 
   createFilter(): (data: any, filter: string) => boolean {
     let filterFunction = function(data, filter): boolean {
       let searchTerms = JSON.parse(filter);
-      console.log("🚀 ~ file: autopart.component.ts:170 ~ AutopartComponent ~ createFilter ~ searchTerms", searchTerms)
+      console.log("🚀 ~ file: autopart.component.ts:165 ~ AutopartComponent ~ createFilter ~ searchTerms", searchTerms)
       
       var dataParse = {
         partType: data.partType.name || "-",
@@ -175,7 +174,6 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
         carBrand: data.carBrand.name || "-",
         serialNumber: data.serialNumber || "-"
       }
-      console.log("🚀 ~ file: autopart.component.ts:178 ~ AutopartComponent ~ createFilter ~ dataParse", dataParse)
 
       return dataParse.partType.toLowerCase().indexOf(searchTerms.partType) !== -1
         && dataParse.partBrand.toLowerCase().indexOf(searchTerms.partBrand) !== -1
