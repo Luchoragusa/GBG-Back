@@ -16,12 +16,9 @@ export class AutopartService {
   getAutoparts(): Observable<Autopart[]> {
     return this._http.get<Autopart[]>(this.url);
   }
-
-  // Devuelve el base 64 de una imagen
-  extraerBase64(image : File) {
-    return new Observable((observer) => {
-      this.readFile(image, observer);
-    });
+  
+  createAutoPart(autopart: any): Observable<Autopart> {
+    return this._http.post<Autopart>(`${this.url}/file`, autopart);
   }
 
   readFile(image: File, observer: Subscriber<any>) {
@@ -36,4 +33,5 @@ export class AutopartService {
       observer.complete();
     }
   }
+
 }

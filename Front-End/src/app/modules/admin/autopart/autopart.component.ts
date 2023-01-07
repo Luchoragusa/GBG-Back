@@ -5,7 +5,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ShowdialogComponent } from './showdialog/showdialog.component';
-import { Autopart } from 'app/core/autopart/autopart';
+import { Autopart, AutopartCreate } from 'app/core/autopart/autopart';
 import { AutopartService } from 'app/core/autopart/autopart.service';
 import { PartTypeService } from 'app/core/part-type/parttype.service';
 import { PartType } from 'app/core/part-type/part-type';
@@ -29,9 +29,9 @@ export class AutopartComponent  implements OnInit {
   configForm: FormGroup;
   sideTittle: string = 'Agregar repuesto';
   isEditAutoPart: boolean = false;
-  imageBase64 : string = null;
   viewAlert:boolean = false;
   editObject: Autopart = null;
+  image: File = null;
 
   autoParts : Autopart[];
   
@@ -87,6 +87,7 @@ export class AutopartComponent  implements OnInit {
         description : [''],
         drawer      : [''],
         image       : [''],
+        stock       : ['']
     });
 
     // Get all autoparts
@@ -224,7 +225,7 @@ export class AutopartComponent  implements OnInit {
       this.isEditAutoPart = false;
 
       // Reset form values
-      this.imageBase64 = null;
+      this.image = null;
       this.selectedCarBrand = null;
       this.selectedPartBrand = null;
       this.selectedPartType = null;
@@ -235,26 +236,30 @@ export class AutopartComponent  implements OnInit {
 
   // Metodo q guarda el formulario
   saveAutoPart() {
+    var formData = new FormData()
 
     this.autoPartForm.controls['partType'].setValue(this.selectedPartType); // <-- Set Value formControl for select option value (marcaRepuesto)
     this.autoPartForm.controls['partBrand'].setValue(this.selectedPartBrand); // <-- Set Value formControl for select option value (marcaRepuesto)
     this.autoPartForm.controls['carBrand'].setValue(this.selectedCarBrand); // <-- Set Value formControl for select option value (marcaAuto)
 
-    const autoPartToSave : Autopart = {
-      id          : this.autoPartForm.value.id,
-      partType    : this.autoPartForm.value.partType,
-      partBrand   : this.autoPartForm.value.partBrand,
-      partModel   : this.autoPartForm.value.partModel,
-      carBrand    : this.autoPartForm.value.carBrand,
-      serialNumber: this.autoPartForm.value.serialNumber,
-      description : this.autoPartForm.value.description,
-      drawer      : this.autoPartForm.value.drawer,
-      image       : this.imageBase64,
-      stock       : this.autoPartForm.value.stock
-    }
-
-    this.toggleDrawer(false);
-    this.dismissed = false;
+    formData.append('idPartType', this.autoPartForm.value.partType);
+    formData.append('idPartBrand', this.autoPartForm.value.partBrand);
+    formData.append('partModel', this.autoPartForm.value.partModel);
+    formData.append('idCarBrand', this.autoPartForm.value.carBrand);
+    formData.append('serialNumber', this.autoPartForm.value.serialNumber);
+    formData.append('description', this.autoPartForm.value.description);
+    formData.append('drawer', this.autoPartForm.value.drawer);
+    formData.append('stock', this.autoPartForm.value.stock);
+    formData.append('image', this.image);
+    
+    this._autopartService.createAutoPart(formData).subscribe(
+      (data: Autopart) => {
+        this.dataSource.data.push(data);
+        this.dataSource._updateChangeSubscription();
+        this.toggleDrawer(false);
+        this.dismissed = false;
+      }
+    );
   }
 
   // Metodo para eidtar un repuesto
@@ -272,7 +277,7 @@ export class AutopartComponent  implements OnInit {
       serialNumber: this.editObject.serialNumber,
     });
 
-    this.imageBase64 =        this.editObject.image;
+    // this.image =        this.editObject.image;
     this.selectedPartType =   this.editObject.partType.name;
     this.selectedCarBrand =   this.editObject.carBrand.name;
     this.selectedPartBrand =  this.editObject.partBrand.name;
@@ -285,15 +290,7 @@ export class AutopartComponent  implements OnInit {
   // Metodo para subir una imagen
 
   onChange(event: any) {
-    const file = event.target.files[0];
-    this._autopartService.extraerBase64(file).subscribe((res: any) => {
-      this.imageBase64 = res;
-    });
-  }
-
-  // Metodo para obtener el base 64 de la imagen
-  getBase64() {
-    return this.imageBase64;
+    this.image = event.target.files[0];
   }
 
   delete() {

@@ -85,7 +85,7 @@
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Tipo de repuesto</mat-label>
           <mat-select [(value)]="selectedPartType">
-            <mat-option [value]="option.name" *ngFor="let option of partTypes">{{ option.name }}</mat-option>
+            <mat-option [value]="option.id" *ngFor="let option of partTypes">{{ option.name }}</mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -93,7 +93,7 @@
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Marca del repuesto</mat-label>
           <mat-select [(value)]="selectedPartBrand">
-            <mat-option [value]="option.name" *ngFor="let option of partBrands">{{ option.name }}</mat-option>
+            <mat-option [value]="option.id" *ngFor="let option of partBrands">{{ option.name }}</mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -101,7 +101,7 @@
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Marca de auto</mat-label>
           <mat-select [(value)]="selectedCarBrand">
-            <mat-option [value]="option.name" *ngFor="let option of carBrands">{{ option.name }}</mat-option>
+            <mat-option [value]="option.id" *ngFor="let option of carBrands">{{ option.name }}</mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -116,6 +116,14 @@
           <mat-label>Numero de serie</mat-label>
           <input matInput type="text" placeholder="ME7.4.9" formControlName = "serialNumber" value="editObject.partModel">
         </mat-form-field>
+
+        <!-- stock -->
+        <ng-container *ngIf="!mode()">
+          <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
+            <mat-label>Stock</mat-label>
+            <input matInput type="number" formControlName = "stock">
+          </mat-form-field>
+        </ng-container>
 
         <!-- drawer -->
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
@@ -137,11 +145,11 @@
         </ng-container>
 
         <!-- Preview de la imagen, renderiza cuando se subio algun archivo -->
-        <ng-container *ngIf="getBase64()">
+        <!-- <ng-container *ngIf="getBase64()">
           <button mat-icon-button (click)="viewImage(getBase64())">
             <i class="fa-solid fa-eye"></i>
           </button>
-        </ng-container>
+        </ng-container> -->
         
         <br>
 
