@@ -1,4 +1,4 @@
-import { CarBrand } from '../car-brand/car-brand';
+import { CarBrand } from '../car-brand/Car-brand';
 import { PartType } from '../part-type/part-type';
 import { PartBrand } from '../part-brand/part-brand';
 export interface Autopart {
