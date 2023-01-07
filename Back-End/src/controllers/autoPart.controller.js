@@ -38,8 +38,8 @@ const upload=multer({storage,fileFilter});
 exports.upload = upload.single('image')
 
 exports.createAutoPart = async (req, res, next) => {
-
     // Le seteo la ruta de la  imagen al objeto que voy a crear
+    
     req.body.image = req.file.originalname;
 
     // Seteo null a los campos que no se reciben
@@ -70,7 +70,7 @@ exports.getAll = async (req, res, next) => {
 
         const autoPartsArray = await Promise.all(
             autoParts.map(async (autoPart) => {
-                autoPart.image = `${process.env.URL}/${autoPart.image}`
+                autoPart.image = `${process.env.Local}/${autoPart.image}`
 
                 var partBrand = null;
                 var carBrand = null;
