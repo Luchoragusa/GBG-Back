@@ -3,7 +3,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { PartypeService } from 'app/core/part-type/partype.service';
+import { PartTypeService } from 'app/core/part-type/parttype.service';
 import { PartType } from 'app/core/part-type/part-type';
 
 
@@ -12,9 +12,9 @@ import { PartType } from 'app/core/part-type/part-type';
   templateUrl: './part-type.component.html',
   styleUrls: ['./part-type.component.scss']
 })
-export class PartTypeComponent implements AfterViewInit, OnInit {
+export class PartTypeComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'name', 'actions'];
+  displayedColumns: string[] = ['name', 'actions'];
   dataSource: MatTableDataSource<PartType>;
   partTypeForm !: FormGroup;
   drawerOpened: boolean;
@@ -30,7 +30,7 @@ export class PartTypeComponent implements AfterViewInit, OnInit {
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _partTypeService: PartypeService
+    private _partTypeService: PartTypeService
   ) {    
   }
   ngOnInit(): void {
@@ -41,13 +41,13 @@ export class PartTypeComponent implements AfterViewInit, OnInit {
     });
     
     // Get all de part types
-    const partTypes = this._partTypeService.getPartTypes();
-    this.dataSource = new MatTableDataSource(partTypes);
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this._partTypeService.getPartTypes().subscribe(
+      (data: PartType[]) => {
+        this.dataSource = new MatTableDataSource(data);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+    );
   }
 
   applyFilter(event: Event) {
@@ -63,9 +63,14 @@ export class PartTypeComponent implements AfterViewInit, OnInit {
     this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
   }
 
-  edit(){
+  edit(partType : PartType){
     this.sideTittle = "Editar tipo de repuesto";
     this.toggleDrawer();
+
+    this.partTypeForm.setValue({
+      id: partType.id,
+      name: partType.name
+    });
   }
 
   toggleDrawer() {

@@ -1,4 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'environments/environment';
+import { Observable } from 'rxjs';
 import { PartBrand } from './part-brand';
 
 @Injectable({
@@ -6,22 +9,14 @@ import { PartBrand } from './part-brand';
 })
 export class PartBrandService {
 
-  constructor() { }
+  url = environment.apiUrl + '/partbrands';
 
+  constructor(private _http: HttpClient) {}
 
   // Devuelve todas los tipos de repuestos
-  getPartBrands(): PartBrand[] {
-    return [
-      { id: '1', name: 'Bosch' },
-      { id: '2', name: 'Denso' },
-      { id: '3', name: 'Delphi' },
-      { id: '4', name: 'Nippon Denso' },
-      { id: '5', name: 'Magneti Marelli' },
-      { id: '6', name: 'Valeo' },
-      { id: '7', name: 'Brembo' },
-      { id: '8', name: 'Akebono' },
-      { id: '9', name: 'TRW' },
-      { id: '10', name: 'Bosal' },
-    ];
+  getPartBrands(): Observable<PartBrand[]> {
+    return this._http.get<PartBrand[]>(this.url);
   }
+  
 }
+

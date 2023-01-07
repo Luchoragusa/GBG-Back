@@ -13,16 +13,17 @@ import { CarBrandService } from 'app/core/car-brand/carbrand.service';
   styleUrls: ['./car-brand.component.scss']
 })
 
-export class CarBrandComponent implements AfterViewInit, OnInit {
-  displayedColumns: string[] = ['id', 'name', 'actions'];
+export class CarBrandComponent implements OnInit {
+  displayedColumns: string[] = ['name', 'actions'];
   dataSource: MatTableDataSource<CarBrand>;
-  drawerMode: 'side' | 'over';
   carBrandForm !: FormGroup;
   configForm: FormGroup;
   drawerOpened: boolean;
   dismissed: boolean = true;
   sideTittle: string = 'Agregar marca de auto';
   viewAlert:boolean = false;
+
+  carBrands : CarBrand[];
 
   dialogMessage: string = 'Esta seguro que desea eliminarlo ? <span class="font-medium">Al eliminarlo se borraran todos los repuestos vinculados con este tipo.</span>';
 
@@ -43,13 +44,15 @@ export class CarBrandComponent implements AfterViewInit, OnInit {
     });
 
     // Get all de car brands
-    const partTypes = this._carBrandService.getCarBrands();
-    this.dataSource = new MatTableDataSource(partTypes)
-  }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this._carBrandService.getCarBrands().subscribe(
+      (data: CarBrand[]) => {
+        this.carBrands = data;
+        this.dataSource = new MatTableDataSource(this.carBrands);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+    );
   }
 
   applyFilter(event: Event) {
@@ -68,16 +71,21 @@ export class CarBrandComponent implements AfterViewInit, OnInit {
     }
   }
 
-  edit(){
+  edit(carBrand : CarBrand){
     this.sideTittle = "Editar marca de auto";
     this.toggleDrawer();
+
+    this.carBrandForm.setValue({
+      id: carBrand.id,
+      name: carBrand.name,
+    });
   }
 
   saveCarBrand(){
     this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
   }
 
-  delete(data : any) {
+  delete(carBrand : CarBrand) {
     this.viewAlert = true; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
 
     // Depues tengo q hacer q se ponga en false, sino no abre mas el dialog

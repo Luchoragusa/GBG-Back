@@ -10,7 +10,7 @@ exports.getAll = Model =>
                 return 0;
             })
 
-            return res.status(200).json({'status':200, elemts, 'msg':'Encontrados correctamente'})
+            return res.status(200).json(elemts)
         } else {
             return res.status(404).json({'msg':'No hay datos'})
         }

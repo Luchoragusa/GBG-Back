@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ShowdialogComponent } from './showdialog/showdialog.component';
 import { Autopart } from 'app/core/autopart/autopart';
 import { AutopartService } from 'app/core/autopart/autopart.service';
-import { PartypeService } from 'app/core/part-type/partype.service';
+import { PartTypeService } from 'app/core/part-type/parttype.service';
 import { PartType } from 'app/core/part-type/part-type';
 import { CarBrandService } from 'app/core/car-brand/carbrand.service';
 import { PartBrand } from 'app/core/part-brand/part-brand';
@@ -21,7 +21,7 @@ import { CarBrand } from 'app/core/car-brand/Car-brand';
 })
 export class AutopartComponent  implements AfterViewInit, OnInit {
 
-  displayedColumns: string[] = ['id', 'partType', 'partBrand', "partModel", "carBrand", "serialNumber", "stock", "drawer", "description", "image", 'actions'];
+  displayedColumns: string[] = ['partType', 'partBrand', "partModel", "carBrand", "serialNumber", "stock", "drawer", "description", "image", 'actions'];
   dataSource: MatTableDataSource<Autopart>;
   autoPartForm !: FormGroup;
   dismissed: boolean = true;
@@ -69,7 +69,7 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
     private _formBuilder: FormBuilder,
     private dialog: MatDialog,
     private _autopartService: AutopartService,
-    private _partypeService: PartypeService,
+    private _parttypeService: PartTypeService,
     private _carBrandService: CarBrandService,
     private _partBrandService: PartBrandService
   ) {
@@ -90,18 +90,28 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
     });
 
     // Get all
-    this.partTypes = this._partypeService.getPartTypes();
-    this.carBrands = this._carBrandService.getCarBrands();
-    this.partBrands = this._partBrandService.getPartBrands();
+    this._parttypeService.getPartTypes().subscribe(
+      (data: PartType[]) => {
+        this.partTypes = data;
+      }
+    );
+
+    this._carBrandService.getCarBrands().subscribe(
+      (data: CarBrand[]) => {
+        this.carBrands = data;
+      }
+    );
+    
+    this._partBrandService.getPartBrands().subscribe(
+      (data: PartBrand[]) => {
+        this.partBrands = data;
+      }
+    );
 
     this._autopartService.getAutoparts().subscribe(
       (data: Autopart[]) => {
         this.autoParts = data;
-        console.log("🚀 ~ file: autopart.component.ts:100 ~ AutopartComponent ~ ngOnInit ~ data", data)
-        
         this.dataSource = new MatTableDataSource(this.autoParts);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
       }
     );
 
@@ -243,17 +253,17 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
     this.editObject = autoPart;
 
     this.autoPartForm.patchValue({
-      id          : autoPart.id,
-      partModel   : autoPart.partModel,
-      drawer      : autoPart.drawer,
-      description : autoPart.description,
-      serialNumber: autoPart.serialNumber,
+      id          : this.editObject.id,
+      partModel   : this.editObject.partModel,
+      drawer      : this.editObject.drawer,
+      description : this.editObject.description,
+      serialNumber: this.editObject.serialNumber,
     });
 
-    this.imageBase64 =        autoPart.image;
-    this.selectedPartType =   autoPart.partType.name;
-    this.selectedCarBrand =   autoPart.carBrand.name;
-    this.selectedPartBrand =  autoPart.partBrand.name;
+    this.imageBase64 =        this.editObject.image;
+    this.selectedPartType =   this.editObject.partType.name;
+    this.selectedCarBrand =   this.editObject.carBrand.name;
+    this.selectedPartBrand =  this.editObject.partBrand.name;
   }
 
   mode(){

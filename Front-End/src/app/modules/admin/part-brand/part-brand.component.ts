@@ -12,8 +12,8 @@ import { PartBrandService } from 'app/core/part-brand/parbrand.service';
   templateUrl: './part-brand.component.html',
   styleUrls: ['./part-brand.component.scss']
 })
-export class PartBrandComponent implements AfterViewInit, OnInit {
-  displayedColumns: string[] = ['id', 'name', 'actions'];
+export class PartBrandComponent implements OnInit {
+  displayedColumns: string[] = ['name', 'actions'];
   dataSource: MatTableDataSource<PartBrand>;
   partBrandForm !: FormGroup;
   drawerOpened: boolean;
@@ -21,6 +21,8 @@ export class PartBrandComponent implements AfterViewInit, OnInit {
   configForm: FormGroup;
   dismissed:boolean = true;
   viewAlert:boolean = false;
+
+  partBrands : PartBrand[];
 
   dialogMessage: string = 'Esta seguro que desea eliminarla ? <span class="font-medium">Al eliminarla se borraran todos los repuestos vinculados con este marca.</span>';
 
@@ -41,13 +43,14 @@ export class PartBrandComponent implements AfterViewInit, OnInit {
     });
 
     // Get all de part types
-    const partBrands = this._partBrandService.getPartBrands();
-    this.dataSource = new MatTableDataSource(partBrands)
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this._partBrandService.getPartBrands().subscribe(
+      (data: PartBrand[]) => {
+        this.partBrands = data;
+        this.dataSource = new MatTableDataSource(this.partBrands);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+    );
   }
 
   applyFilter(event: Event) {
@@ -63,9 +66,14 @@ export class PartBrandComponent implements AfterViewInit, OnInit {
     this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
   }
 
-  edit(){
+  edit(partBrand : PartBrand){
     this.sideTittle = "Editar marca de repuesto";
     this.toggleDrawer();
+
+    this.partBrandForm.setValue({
+      id: partBrand.id,
+      name: partBrand.name,
+    });
   }
 
   toggleDrawer() {

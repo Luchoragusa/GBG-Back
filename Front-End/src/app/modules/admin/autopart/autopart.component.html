@@ -212,12 +212,6 @@
     <!-- Tabla de repuestos  -->
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource" matSort>
-    
-        <!-- ID Column -->
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef>ID</th>
-          <td mat-cell *matCellDef="let row"> {{row.id}} </td>
-        </ng-container>
 
         <!-- Part Type Column -->
         <ng-container matColumnDef="partType">

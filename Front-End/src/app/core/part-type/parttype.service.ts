@@ -2,19 +2,20 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
-import { CarBrand } from './Car-brand';
+import { PartType } from './part-type';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CarBrandService {
+export class PartTypeService {
 
-  url = environment.apiUrl + '/carbrands';
+  url = environment.apiUrl + '/parttypes';
 
   constructor(private _http: HttpClient) {}
 
-  // Devuelve todas los tipos de repuestos
-  getCarBrands(): Observable<CarBrand[]> {
-    return this._http.get<CarBrand[]>(this.url);
+
+  // Devuelve todos los tipos de repuestos
+  getPartTypes(): Observable<PartType[]> {
+    return this._http.get<PartType[]>(this.url);
   }
 }
