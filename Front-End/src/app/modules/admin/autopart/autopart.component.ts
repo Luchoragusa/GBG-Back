@@ -89,31 +89,14 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
         image       : [''],
     });
 
-    // Get all
-    this._parttypeService.getPartTypes().subscribe(
-      (data: PartType[]) => {
-        this.partTypes = data;
-      }
-    );
-
-    this._carBrandService.getCarBrands().subscribe(
-      (data: CarBrand[]) => {
-        this.carBrands = data;
-      }
-    );
-    
-    this._partBrandService.getPartBrands().subscribe(
-      (data: PartBrand[]) => {
-        this.partBrands = data;
-      }
-    );
-
+    // Get all autoparts
     this._autopartService.getAutoparts().subscribe(
       (data: Autopart[]) => {
         this.autoParts = data;
         this.dataSource = new MatTableDataSource(this.autoParts);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        this.dataSource.filterPredicate = this.createFilter();
       }
     );
 
@@ -154,27 +137,48 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
           this.dataSource.filter = JSON.stringify(this.filterValues);
         }
       )
+
+    // others getAll's
+
+    this._parttypeService.getPartTypes().subscribe(
+      (data: PartType[]) => {
+        this.partTypes = data;
+      }
+    );
+
+    this._carBrandService.getCarBrands().subscribe(
+      (data: CarBrand[]) => {
+        this.carBrands = data;
+      }
+    );
+    
+    this._partBrandService.getPartBrands().subscribe(
+      (data: PartBrand[]) => {
+        this.partBrands = data;
+      }
+    );
   }
 
   ngAfterViewInit() {
-
-    this.dataSource.filterPredicate = this.createFilter();
+    // this.dataSource.filterPredicate = this.createFilter();
   }
 
   createFilter(): (data: any, filter: string) => boolean {
     let filterFunction = function(data, filter): boolean {
       let searchTerms = JSON.parse(filter);
+      console.log("🚀 ~ file: autopart.component.ts:170 ~ AutopartComponent ~ createFilter ~ searchTerms", searchTerms)
       
       var dataParse = {
-        partType: data.partType.name,
-        partBrand: data.partBrand.name,
-        partModel: data.partModel,
-        carBrand: data.carBrand.name,
-        serialNumber: data.serialNumber
+        partType: data.partType.name || "-",
+        partBrand: data.partBrand.name || "-",
+        partModel: data.partModel || "-",
+        carBrand: data.carBrand.name || "-",
+        serialNumber: data.serialNumber || "-"
       }
+      console.log("🚀 ~ file: autopart.component.ts:178 ~ AutopartComponent ~ createFilter ~ dataParse", dataParse)
 
       return dataParse.partType.toLowerCase().indexOf(searchTerms.partType) !== -1
-        && dataParse.partBrand.toString().toLowerCase().indexOf(searchTerms.partBrand) !== -1
+        && dataParse.partBrand.toLowerCase().indexOf(searchTerms.partBrand) !== -1
         && dataParse.partModel.toLowerCase().indexOf(searchTerms.partModel) !== -1
         && dataParse.carBrand.toLowerCase().indexOf(searchTerms.carBrand) !== -1
         && dataParse.serialNumber.toLowerCase().indexOf(searchTerms.serialNumber) !== -1;
