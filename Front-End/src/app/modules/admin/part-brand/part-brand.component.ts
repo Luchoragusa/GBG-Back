@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewChild } from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
@@ -21,6 +21,7 @@ export class PartBrandComponent implements OnInit {
   configForm: FormGroup;
   dismissed:boolean = true;
   viewAlert:boolean = false;
+  isEdit: boolean = false;
 
   partBrands : PartBrand[];
 
@@ -63,7 +64,23 @@ export class PartBrandComponent implements OnInit {
   }
 
   savePartBrand(){
-    this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
+    if(this.isEdit){
+      // Update
+    }else{
+      // Create
+     const pb = {
+        name: this.partBrandForm.value.name
+     }
+
+      this._partBrandService.createPartBrand(pb).subscribe(
+        (data: PartBrand) => {
+          this.dataSource.data.push(data); // Esto es para que se vea en la tabla
+          this.dataSource._updateChangeSubscription(); // Esto es para que se vea en la tabla
+          this.toggleDrawer();
+          this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
+        }
+      );
+    }
   }
 
   edit(partBrand : PartBrand){

@@ -18,4 +18,9 @@ export class PartTypeService {
   getPartTypes(): Observable<PartType[]> {
     return this._http.get<PartType[]>(this.url);
   }
+
+  createPartType(partType: any): Observable<PartType> {
+    return this._http.post<PartType>(this.url, partType);
+  }
+  
 }

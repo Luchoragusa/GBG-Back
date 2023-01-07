@@ -17,6 +17,10 @@ export class PartBrandService {
   getPartBrands(): Observable<PartBrand[]> {
     return this._http.get<PartBrand[]>(this.url);
   }
+
+  createPartBrand(partBrand: any): Observable<PartBrand> {
+    return this._http.post<PartBrand>(this.url, partBrand);
+  }
   
 }
 

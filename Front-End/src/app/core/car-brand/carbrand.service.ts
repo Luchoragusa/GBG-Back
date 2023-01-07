@@ -17,4 +17,9 @@ export class CarBrandService {
   getCarBrands(): Observable<CarBrand[]> {
     return this._http.get<CarBrand[]>(this.url);
   }
+
+  createCarBrand(carBrand: any): Observable<CarBrand> {
+    return this._http.post<CarBrand>(this.url, carBrand);
+  }
+  
 }

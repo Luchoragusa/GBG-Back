@@ -22,6 +22,7 @@ export class CarBrandComponent implements OnInit {
   dismissed: boolean = true;
   sideTittle: string = 'Agregar marca de auto';
   viewAlert:boolean = false;
+  isEdit : boolean = false;
 
   carBrands : CarBrand[];
 
@@ -82,7 +83,23 @@ export class CarBrandComponent implements OnInit {
   }
 
   saveCarBrand(){
-    this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
+    if(this.isEdit){
+      // Update
+    }else{
+      // Create
+     const cb = {
+        name: this.carBrandForm.value.name
+     }
+
+      this._carBrandService.createCarBrand(cb).subscribe(
+        (data: CarBrand) => {
+          this.dataSource.data.push(data); // Esto es para que se vea en la tabla
+          this.dataSource._updateChangeSubscription(); // Esto es para que se vea en la tabla
+          this.toggleDrawer();
+          this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
+        }
+      );
+    }
   }
 
   delete(carBrand : CarBrand) {

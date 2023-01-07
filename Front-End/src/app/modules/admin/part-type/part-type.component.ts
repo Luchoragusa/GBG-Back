@@ -22,6 +22,7 @@ export class PartTypeComponent implements OnInit {
   configForm: FormGroup;
   dismissed:boolean = true;
   viewAlert:boolean = false;
+  isEdit: boolean = false;
 
   dialogMessage: string = 'Esta seguro que desea eliminarlo ? <span class="font-medium">Al eliminarlo se borraran todos los repuestos vinculados con este tipo.</span>';
 
@@ -60,10 +61,27 @@ export class PartTypeComponent implements OnInit {
   }
 
   savePartBrand(){
-    this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
+    if(this.isEdit){
+      // Update
+    }else{
+      // Create
+     const pt = {
+        name: this.partTypeForm.value.name
+     }
+
+      this._partTypeService.createPartType(pt).subscribe(
+        (data: PartType) => {
+          this.dataSource.data.push(data); // Esto es para que se vea en la tabla
+          this.dataSource._updateChangeSubscription(); // Esto es para que se vea en la tabla
+          this.toggleDrawer();
+          this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
+        }
+      );
+    }
   }
 
   edit(partType : PartType){
+    this.isEdit = true;
     this.sideTittle = "Editar tipo de repuesto";
     this.toggleDrawer();
 

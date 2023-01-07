@@ -44,7 +44,7 @@ exports.create = Model =>
     async (req, res, next) => {
         const elemnt = await Model.create(req.body);
         if (elemnt) {
-            return res.status(201).json({elemnt})
+            return res.status(201).json(elemnt)
         } else {
             return res.status(404).json({'msg':'No se recibieron los datos'})
         }

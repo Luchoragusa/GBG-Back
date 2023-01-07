@@ -1,4 +1,4 @@
 export interface PartType {
-    id: string;
+    id ?: string;
     name: string;
 }
