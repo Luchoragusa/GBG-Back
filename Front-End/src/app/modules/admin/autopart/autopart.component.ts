@@ -112,6 +112,8 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
       (data: Autopart[]) => {
         this.autoParts = data;
         this.dataSource = new MatTableDataSource(this.autoParts);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       }
     );
 
@@ -122,7 +124,6 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
         partType => {
           this.filterValues.partType = partType.toLowerCase();
           this.dataSource.filter = JSON.stringify(this.filterValues);
-          console.log(this.dataSource.filter);
         }
       )
     this.partBrandFilter.valueChanges
@@ -156,19 +157,27 @@ export class AutopartComponent  implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+
     this.dataSource.filterPredicate = this.createFilter();
   }
 
   createFilter(): (data: any, filter: string) => boolean {
     let filterFunction = function(data, filter): boolean {
       let searchTerms = JSON.parse(filter);
-      return data.partType.toLowerCase().indexOf(searchTerms.partType) !== -1
-        && data.partBrand.toString().toLowerCase().indexOf(searchTerms.partBrand) !== -1
-        && data.partModel.toLowerCase().indexOf(searchTerms.partModel) !== -1
-        && data.carBrand.toLowerCase().indexOf(searchTerms.carBrand) !== -1
-        && data.serialNumber.toLowerCase().indexOf(searchTerms.serialNumber) !== -1;
+      
+      var dataParse = {
+        partType: data.partType.name,
+        partBrand: data.partBrand.name,
+        partModel: data.partModel,
+        carBrand: data.carBrand.name,
+        serialNumber: data.serialNumber
+      }
+
+      return dataParse.partType.toLowerCase().indexOf(searchTerms.partType) !== -1
+        && dataParse.partBrand.toString().toLowerCase().indexOf(searchTerms.partBrand) !== -1
+        && dataParse.partModel.toLowerCase().indexOf(searchTerms.partModel) !== -1
+        && dataParse.carBrand.toLowerCase().indexOf(searchTerms.carBrand) !== -1
+        && dataParse.serialNumber.toLowerCase().indexOf(searchTerms.serialNumber) !== -1;
     }
     return filterFunction;
   }
