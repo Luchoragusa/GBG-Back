@@ -70,7 +70,7 @@ exports.getAll = async (req, res, next) => {
 
         const autoPartsArray = await Promise.all(
             autoParts.map(async (autoPart) => {
-                autoPart.image = `${process.env.Local}/${autoPart.image}`
+                autoPart.image = `${process.env.URL}/${autoPart.image}`
 
                 var partBrand = null;
                 var carBrand = null;
