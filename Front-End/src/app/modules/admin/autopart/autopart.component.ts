@@ -98,9 +98,9 @@ export class AutopartComponent  implements OnInit {
         carBrand    : [''],
         serialNumber: ['', [Validators.maxLength(25)]],
         description : ['', [Validators.maxLength(200)]],
-        drawer      : ['', [Validators.maxLength(10)]],
+        drawer      : ['', [Validators.required, Validators.maxLength(10)]],
         image       : [''],
-        stock       : ['', [Validators.required, Validators.min(1)]]
+        stock       : ['', [Validators.required]]
     });
 
     // Get all autoparts

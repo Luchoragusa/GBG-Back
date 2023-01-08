@@ -89,6 +89,7 @@
           <mat-select [(value)]="selectedPartType" formControlName="partType">
             <mat-option [value]="option.id" *ngFor="let option of partTypes">{{ option.name }}</mat-option>
           </mat-select>
+          <mat-error *ngIf="autoPartForm.get('partType').hasError('required')">Es requerido el tipo de repuesto</mat-error>
         </mat-form-field>
 
         <!-- partBrand -->
@@ -111,12 +112,14 @@
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Modelo del repuesto</mat-label>
           <input matInput type="text" placeholder="ME7.4.9" formControlName = "partModel">
+          <mat-error *ngIf="autoPartForm.get('partModel').hasError('maxLength')">Como maximo puede tener 25 caracteres</mat-error>
         </mat-form-field>
 
         <!-- serialNumber -->
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Numero de serie</mat-label>
           <input matInput type="text" placeholder="ME7.4.9" formControlName = "serialNumber">
+          <mat-error *ngIf="autoPartForm.get('serialNumber').hasError('maxLength')">Como maximo puede tener 25 caracteres</mat-error>
         </mat-form-field>
 
         <!-- stock -->
@@ -124,6 +127,7 @@
           <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
             <mat-label>Stock</mat-label>
             <input matInput type="number" formControlName = "stock">
+            <mat-error *ngIf="autoPartForm.get('stock').hasError('required')">Es requerido el stock del repuesto</mat-error>
           </mat-form-field>
         </ng-container>
 
@@ -131,12 +135,15 @@
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Cajon</mat-label>
           <input matInput type="text" placeholder="1" formControlName = "drawer">
+          <mat-error *ngIf="autoPartForm.get('drawer').hasError('required')">Es requerido el cajon del repuesto</mat-error>
+          <mat-error *ngIf="autoPartForm.get('drawer').hasError('maxLength')">Como maximo puede tener 10 caracteres</mat-error>
         </mat-form-field>
         
         <!-- description -->
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Descripcion</mat-label>
           <input matInput #message maxlength="200" placeholder="Ej: Peugeot 206/207 Motor 1.4 8v o 1.6 16v" formControlName = "description">
+          <mat-error *ngIf="autoPartForm.get('description').hasError('maxLength')">Como maximo puede tener 200 caracteres</mat-error>
           <mat-hint>
             {{message.value.length}} / 200 <!-- Esto es para que se vea el contador de caracteres -->
           </mat-hint>
@@ -157,7 +164,7 @@
 
         <div mat-dialog-actions [align]="'end'">
           <button mat-raised-button color="warn" mat-dialog-close (click)="toggleDrawer(false)">Cancelar</button>
-          <button mat-raised-button color="primary" cdkFocusInitial (click)="saveAutoPart()">Guardar</button>
+          <button mat-raised-button color="primary" cdkFocusInitial (click)="saveAutoPart()" type="submit" [disabled]="!autoPartForm.valid">Guardar</button>
         </div>
 
       </form>
