@@ -43,10 +43,13 @@ export class PartTypeComponent implements OnInit {
     
     // Get all de part types
     this._partTypeService.getPartTypes().subscribe(
-      (data: PartType[]) => {
-        this.dataSource = new MatTableDataSource(data);
+      next => {
+        this.dataSource = new MatTableDataSource(next);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+      },
+      error => {
+        this.setDialog(error.error.msg);
       }
     );
   }
@@ -70,11 +73,14 @@ export class PartTypeComponent implements OnInit {
      }
 
       this._partTypeService.createPartType(pt).subscribe(
-        (data: PartType) => {
-          this.dataSource.data.push(data); // Esto es para que se vea en la tabla
+        next => {
+          this.dataSource.data.push(next); // Esto es para que se vea en la tabla
           this.dataSource._updateChangeSubscription(); // Esto es para que se vea en la tabla
           this.toggleDrawer();
           this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
+        },
+        error => {
+          this.setDialog(error.error.msg);
         }
       );
     }
@@ -107,5 +113,12 @@ export class PartTypeComponent implements OnInit {
 
   getViewAlert(){
     return this.viewAlert;
+  }
+
+  // Metodo que muestra el dialog para mostrar el error
+  setDialog (message: string){
+    this.dialogMessage = message;
+    this.viewAlert= true;
+    this.toggleDrawer();
   }
 }

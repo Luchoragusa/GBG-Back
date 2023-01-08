@@ -21,35 +21,46 @@ import { CarBrand } from 'app/core/car-brand/Car-brand';
 })
 export class AutopartComponent  implements OnInit {
 
+  // Variables de la tabla
   displayedColumns: string[] = ['partType', 'partBrand', "carBrand", "partModel", "serialNumber", "stock", "drawer", "description", "image", 'actions'];
   dataSource: MatTableDataSource<Autopart>;
-  autoPartForm !: FormGroup;
-  dismissed: boolean = true;
-  drawerOpened: boolean;
-  configForm: FormGroup;
-  sideTittle: string = 'Agregar repuesto';
-  isEditAutoPart: boolean = false;
-  viewAlert:boolean = false;
-  editObject: Autopart = null;
-  image: File = null;
-
-  autoParts : Autopart[];
-  
-  partTypes : PartType[];
-  selectedPartType : string = null;
-  
-  carBrands : CarBrand[];
-  selectedCarBrand : string = null;
-
-  partBrands : PartBrand[];
-  selectedPartBrand: string = null;
-
-  dialogMessage: string = 'Esta seguro que desea eliminarla ? <span class="font-medium">Al eliminarla se borraran todos los repuestos vinculados con esta marca.</span>';
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  autoParts : Autopart[];
 
-  // Filtros
+  // Variables del formulario
+  autoPartForm !: FormGroup;
+  configForm: FormGroup;
+  editObject: Autopart = null;
+  image: string = null;
+  selectedPartType : PartType = null;
+  selectedCarBrand : CarBrand = null;
+  selectedPartBrand: PartBrand = null;
+
+  // Variables de la alerta de (la que sale arriba a la izquierda)
+  alertMessage: string = '';
+  dismissed: boolean = true;
+  alertType: string = 'success';
+
+  // Variables de la alerta del eliminar
+  dialogMessage: string = 'Esta seguro que desea eliminarla ? <span class="font-medium">Al eliminarla se borraran todos los repuestos vinculados con esta marca.</span>';
+  viewAlert:boolean = false;
+
+  // Variables del SideNav
+  drawerOpened: boolean;
+  sideTittle: string = 'Agregar repuesto';
+  isEditAutoPart: boolean = false;
+
+  // ============= Filtro =============
+  
+  partTypes : PartType[];
+  selectedPartTypeFilter : PartType = null;
+  
+  carBrands : CarBrand[];
+  selectedCarBrandFilter : CarBrand = null;
+  
+  partBrands : PartBrand[];
+  selectedPartBrandFilter: PartBrand = null;
 
   partTypeFilter = new FormControl('');
   partBrandFilter = new FormControl('');
@@ -64,6 +75,8 @@ export class AutopartComponent  implements OnInit {
     carBrand: '',
     serialNumber: ''
   };
+
+  // ==========================
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -92,12 +105,15 @@ export class AutopartComponent  implements OnInit {
 
     // Get all autoparts
     this._autopartService.getAutoparts().subscribe(
-      (data: Autopart[]) => {
-        this.autoParts = data;
+      next => {
+        this.autoParts = next;
         this.dataSource = new MatTableDataSource(this.autoParts);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.dataSource.filterPredicate = this.createFilter();
+      },
+      error => {
+        this.setDialog(error.error.msg);
       }
     );
 
@@ -142,31 +158,40 @@ export class AutopartComponent  implements OnInit {
     // others getAll's
 
     this._parttypeService.getPartTypes().subscribe(
-      (data: PartType[]) => {
-        this.partTypes = data;
+      next => {
+        this.partTypes = next;
         this.partTypes.unshift({id: "0", name: ""});
+      },
+      error => {
+        this.setDialog(error.error.msg);
       }
     );
 
     this._carBrandService.getCarBrands().subscribe(
-      (data: CarBrand[]) => {
-        this.carBrands = data;
+      next => {
+        this.carBrands = next;
         this.carBrands.unshift({id: "0", name: ""});
+      },
+      error => {
+        this.setDialog(error.error.msg);
       }
     );
     
     this._partBrandService.getPartBrands().subscribe(
-      (data: PartBrand[]) => {
-        this.partBrands = data;
+      next => {
+        this.partBrands = next;
         this.partBrands.unshift({id: "0", name: ""});
+      },
+      error => {
+        this.setDialog(error.error.msg);
       }
     );
   }
 
+  // Metodo para crear el filtro
   createFilter(): (data: any, filter: string) => boolean {
     let filterFunction = function(data, filter): boolean {
       let searchTerms = JSON.parse(filter);
-      console.log("🚀 ~ file: autopart.component.ts:165 ~ AutopartComponent ~ createFilter ~ searchTerms", searchTerms)
       
       var dataParse = {
         partType: data.partType.name || "-",
@@ -186,8 +211,10 @@ export class AutopartComponent  implements OnInit {
   }
 
   // Metodo q muestra la imagen en el dialog
-
   viewImage(image : string) {
+    if (image == null) {
+      image = this.image;
+    }
     this.dialog.open(ShowdialogComponent, {
       data: {
         type: 'image',
@@ -197,7 +224,6 @@ export class AutopartComponent  implements OnInit {
   }
 
   // Metodo q muestra la descripcion en el dialog
-
   viewDescription(description : string) {
     this.dialog.open(ShowdialogComponent, {
       data: {
@@ -205,10 +231,131 @@ export class AutopartComponent  implements OnInit {
         data: description
       }
     });
+  }  
+
+  // ============ SideNav ============
+
+    // Metodo q guarda el formulario
+    saveAutoPart() {
+      var formData = new FormData()
+  
+      this.autoPartForm.controls['partType'].setValue(this.selectedPartType); // <-- Set Value formControl for select option value (marcaRepuesto)
+      this.autoPartForm.controls['partBrand'].setValue(this.selectedPartBrand); // <-- Set Value formControl for select option value (marcaRepuesto)
+      this.autoPartForm.controls['carBrand'].setValue(this.selectedCarBrand); // <-- Set Value formControl for select option value (marcaAuto)
+  
+      formData.append('idPartType', this.autoPartForm.value.partType);
+      formData.append('idPartBrand', this.autoPartForm.value.partBrand);
+      formData.append('partModel', this.autoPartForm.value.partModel);
+      formData.append('idCarBrand', this.autoPartForm.value.carBrand);
+      formData.append('serialNumber', this.autoPartForm.value.serialNumber);
+      formData.append('description', this.autoPartForm.value.description);
+      formData.append('drawer', this.autoPartForm.value.drawer);
+      formData.append('stock', this.autoPartForm.value.stock);
+      formData.append('image', this.image);
+      
+      this._autopartService.createAutoPart(formData).subscribe(
+        next => {
+  
+          // Esto deberia hacert que se recagrgue la tabla, pero no funca
+  
+          // this.dataSource.data.push(data);
+          // this.dataSource._updateChangeSubscription();
+          this.setAlert(`Se creo el repuesto "${this.autoPartForm.value.partModel}"`, "success");
+        },
+        error => {
+          this.setDialog(error.error.msg);
+        }
+      );
+    }
+  
+    // Metodo para eidtar un repuesto
+    edit(autoPart : Autopart){
+      this.sideTittle = "Editar repuesto";
+      this.toggleDrawer(true);
+      this.editObject = autoPart;
+  
+      this.autoPartForm.setValue({
+        id          : autoPart.id,
+        partModel   : autoPart.partModel,
+        drawer      : autoPart.drawer,
+        description : autoPart.description,
+        serialNumber: autoPart.serialNumber,
+        stock       : autoPart.stock,
+        partType    : autoPart.partType,
+        partBrand   : autoPart.partBrand,
+        carBrand    : autoPart.carBrand,
+        image       : null
+      });
+  
+      this.image = autoPart.image;
+    }
+
+    // Metodo q muestra/oculta el drawer
+    toggleDrawer(mode : boolean) {
+      if(mode){
+        this.isEditAutoPart = true;
+      }else{
+        this.isEditAutoPart = false;
+
+        // Reset form values
+        this.image = null;
+        this.selectedCarBrand = null;
+        this.selectedPartBrand = null;
+        this.selectedPartType = null;
+      }
+      this.drawerOpened = !this.drawerOpened;
+      this.autoPartForm.reset();
+    }
+
+    // Metodo para agregar un repuesto al stock
+    addStock(){
+      this._autopartService.addStock(this.editObject).subscribe(
+        next => {
+          this.editObject.stock = next.stock;
+          this.setAlert(`Se sumo 1 al stock de " ${this.editObject.partModel} "`, "info");
+        },
+        error => {
+          this.setDialog(error.error.msg);
+        }
+      );
+    }
+
+    // Metodo para quitar un repuesto al stock
+    substracStock(){
+      this._autopartService.substracStock(this.editObject).subscribe(
+        next => {
+          this.editObject.stock = next.stock;
+          if (next.stock == 0) {
+            this.dialogMessage = `Se agoto el stock de " ${this.editObject.partModel} "`;
+            this.viewAlert= true;
+            this.toggleDrawer(false);
+          } else {
+            this.setAlert(`Se resto 1 al stock del repuesto modelo " ${this.editObject.partModel} "`, "info");
+          }
+        },
+        error => {
+          this.setDialog(error.error.msg);
+        }
+      );
+    }
+    // ==================================
+
+  // Metodo que setea los parametros de la alerta de arriba a la izquierda
+  setAlert (message: string, type: string){
+    this.alertMessage = message;
+    this.alertType = type;
+    this.toggleDrawer(false);
+    this.dismissed = false;
   }
 
-  // Metodo que devuelve bool si el campo es null
+  // Metodo que muestra el dialog para mostrar el error
+  setDialog (message: string){
+    this.dialogMessage = message;
+    this.viewAlert= true;
+    this.toggleDrawer(false);
+  }
 
+  // Metodo que devuelve bool si el campo es null, lo uso para ver si muestro el ojito de la descripcion
   getStatus(value : string) {
     if(value != null){
       return true;
@@ -217,90 +364,14 @@ export class AutopartComponent  implements OnInit {
     }
   }
 
-  // Metodo q muestra/oculta el drawer
-  toggleDrawer(mode : boolean) {
-    if(mode){
-      this.isEditAutoPart = true;
-    }else{
-      this.isEditAutoPart = false;
-
-      // Reset form values
-      this.image = null;
-      this.selectedCarBrand = null;
-      this.selectedPartBrand = null;
-      this.selectedPartType = null;
-    }
-    this.drawerOpened = !this.drawerOpened;
-    this.autoPartForm.reset();
-  }
-
-  // Metodo q guarda el formulario
-  saveAutoPart() {
-    var formData = new FormData()
-
-    this.autoPartForm.controls['partType'].setValue(this.selectedPartType); // <-- Set Value formControl for select option value (marcaRepuesto)
-    this.autoPartForm.controls['partBrand'].setValue(this.selectedPartBrand); // <-- Set Value formControl for select option value (marcaRepuesto)
-    this.autoPartForm.controls['carBrand'].setValue(this.selectedCarBrand); // <-- Set Value formControl for select option value (marcaAuto)
-
-    formData.append('idPartType', this.autoPartForm.value.partType);
-    formData.append('idPartBrand', this.autoPartForm.value.partBrand);
-    formData.append('partModel', this.autoPartForm.value.partModel);
-    formData.append('idCarBrand', this.autoPartForm.value.carBrand);
-    formData.append('serialNumber', this.autoPartForm.value.serialNumber);
-    formData.append('description', this.autoPartForm.value.description);
-    formData.append('drawer', this.autoPartForm.value.drawer);
-    formData.append('stock', this.autoPartForm.value.stock);
-    formData.append('image', this.image);
-    
-    this._autopartService.createAutoPart(formData).subscribe(
-      (data: Autopart) => {
-
-        // Esto deberia hacert que se recagrgue la tabla, pero no funca
-
-        // this.dataSource.data.push(data);
-        // this.dataSource._updateChangeSubscription();
-        this.toggleDrawer(false);
-        this.dismissed = false;
-      }
-    );
-  }
-
-  // Metodo para eidtar un repuesto
-  edit(autoPart : Autopart){
-    this.sideTittle = "Editar repuesto";
-    this.toggleDrawer(true);
-
-    this.editObject = autoPart;
-
-    this.autoPartForm.patchValue({
-      id          : this.editObject.id,
-      partModel   : this.editObject.partModel,
-      drawer      : this.editObject.drawer,
-      description : this.editObject.description,
-      serialNumber: this.editObject.serialNumber,
-    });
-
-    // this.image =        this.editObject.image;
-    this.selectedPartType =   this.editObject.partType.name;
-    this.selectedCarBrand =   this.editObject.carBrand.name;
-    this.selectedPartBrand =  this.editObject.partBrand.name;
-  }
-
+  // Metodo q muestra el dialog para agregar una autoparte
   mode(){
     return this.isEditAutoPart;
   }
 
   // Metodo para subir una imagen
-
   onChange(event: any) {
     this.image = event.target.files[0];
-  }
-
-  delete() {
-    this.viewAlert = true; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
-
-    // Depues tengo q hacer q se ponga en false, sino no abre mas el dialog
-    // this.viewAlert = false;
   }
 
   getViewAlert(){

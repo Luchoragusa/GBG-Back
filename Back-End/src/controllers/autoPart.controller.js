@@ -35,23 +35,27 @@ const upload=multer({storage,fileFilter});
 exports.upload = upload.single('image')
 
 exports.createAutoPart = async (req, res, next) => {
-    // Le seteo la ruta de la  imagen al objeto que voy a crear
-    
-    req.body.image = req.file.originalname;
+    try{
+        // Le seteo la ruta de la  imagen al objeto que voy a crear
+        
+        req.body.image = req.file.originalname;
 
-    // Seteo null a los campos que no se reciben
-    req.body.partModel = req.body.partModel || null;
-    req.body.serialNumber = req.body.serialNumber || null;
-    req.body.description = req.body.description || null;
-    req.body.idCarBrand = req.body.idCarBrand || null;
-    req.body.idPartBrand = req.body.idPartBrand || null;
+        // Seteo null a los campos que no se reciben
+        req.body.partModel = req.body.partModel || null;
+        req.body.serialNumber = req.body.serialNumber || null;
+        req.body.description = req.body.description || null;
+        req.body.idCarBrand = req.body.idCarBrand || null;
+        req.body.idPartBrand = req.body.idPartBrand || null;
 
-    // Creo el objeto
-    const elemnt = await AutoPart.create(req.body);
-    if (elemnt) {
-        return res.status(201).json({elemnt})
-    } else {
-        return res.status(404).json({'msg':'No se recibieron los datos'})
+        // Creo el objeto
+        const elemnt = await AutoPart.create(req.body);
+        if (elemnt) {
+            return res.status(201).json({elemnt})
+        } else {
+            return res.status(404).json({'msg':'No se recibieron los datos'})
+        }
+    } catch (error) {
+        res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
     }
 }
 
@@ -81,7 +85,7 @@ exports.getAll = async (req, res, next) => {
         );
         await res.status(200).json(autoPartsArray);
     } catch (error) {
-        res.status(500).json({ msg: 'Error en el servidor' });
+        res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
     }
 }
 
@@ -89,15 +93,35 @@ exports.addStock = async (req, res, next) => {
     try{
         const { id } = req.params;
         const autoPart = await AutoPart.findByPk(id);
+
         if (autoPart) {
-            const newStock = elemnt.stock + 1;
-            const newAutoPart = await elemnt.update({ stock: newStock });
-            return res.status(200).json({newAutoPart});
+            const newStock = autoPart.stock + 1;
+            const newAutoPart = await autoPart.update({ stock: newStock });
+            return res.status(200).json(newAutoPart);
         } else {
             return res.status(404).json({'msg':'No se recibieron los datos'})
         }
     } catch (error) {
-        res.status(500).json({ 'msg': 'Error en el servidor' });
+        res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
+    }
+}
+
+exports.substractStock = async (req, res, next) => {
+    try{
+        const { id } = req.params;
+        const autoPart = await AutoPart.findByPk(id);
+        if (autoPart) {
+            if (autoPart.stock === 0) {
+                return res.status(404).json({'msg':'No hay stock del repuesto <strong> ' + autoPart.partModel + ' </strong>'})
+            }
+            const newStock = autoPart.stock - 1;
+            const newAutoPart = await autoPart.update({ stock: newStock });
+            return res.status(200).json(newAutoPart);
+        } else {
+            return res.status(404).json({'msg':'No se recibieron los datos'})
+        }
+    } catch (error) {
+        res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
     }
 }
 

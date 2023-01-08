@@ -45,11 +45,14 @@ export class PartBrandComponent implements OnInit {
 
     // Get all de part types
     this._partBrandService.getPartBrands().subscribe(
-      (data: PartBrand[]) => {
-        this.partBrands = data;
+      next => {
+        this.partBrands = next;
         this.dataSource = new MatTableDataSource(this.partBrands);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+      },
+      error => {
+        this.setDialog(error.error.msg);
       }
     );
   }
@@ -73,11 +76,14 @@ export class PartBrandComponent implements OnInit {
      }
 
       this._partBrandService.createPartBrand(pb).subscribe(
-        (data: PartBrand) => {
-          this.dataSource.data.push(data); // Esto es para que se vea en la tabla
+        next => {
+          this.dataSource.data.push(next); // Esto es para que se vea en la tabla
           this.dataSource._updateChangeSubscription(); // Esto es para que se vea en la tabla
           this.toggleDrawer();
           this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
+        },
+        error => {
+          this.setDialog(error.error.msg);
         }
       );
     }
@@ -109,5 +115,12 @@ export class PartBrandComponent implements OnInit {
 
   getViewAlert(){
     return this.viewAlert;
+  }
+
+  // Metodo que muestra el dialog para mostrar el error
+  setDialog (message: string){
+    this.dialogMessage = message;
+    this.viewAlert= true;
+    this.toggleDrawer();
   }
 }

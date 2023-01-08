@@ -47,11 +47,14 @@ export class CarBrandComponent implements OnInit {
     // Get all de car brands
 
     this._carBrandService.getCarBrands().subscribe(
-      (data: CarBrand[]) => {
-        this.carBrands = data;
+      next => {
+        this.carBrands = next;
         this.dataSource = new MatTableDataSource(this.carBrands);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+      },
+      error => {
+        this.setDialog(error.error.msg);
       }
     );
   }
@@ -90,13 +93,15 @@ export class CarBrandComponent implements OnInit {
      const cb = {
         name: this.carBrandForm.value.name
      }
-
       this._carBrandService.createCarBrand(cb).subscribe(
-        (data: CarBrand) => {
-          this.dataSource.data.push(data); // Esto es para que se vea en la tabla
+        next => {
+          this.dataSource.data.push(next); // Esto es para que se vea en la tabla
           this.dataSource._updateChangeSubscription(); // Esto es para que se vea en la tabla
           this.toggleDrawer();
           this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
+        },
+        error => {
+          this.setDialog(error.error.msg);
         }
       );
     }
@@ -111,5 +116,12 @@ export class CarBrandComponent implements OnInit {
 
   getViewAlert(){
     return this.viewAlert;
+  }
+
+  // Metodo que muestra el dialog para mostrar el error
+  setDialog (message: string){
+    this.dialogMessage = message;
+    this.viewAlert= true;
+    this.toggleDrawer();
   }
 }

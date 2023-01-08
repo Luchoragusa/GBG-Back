@@ -21,6 +21,15 @@ export class AutopartService {
     return this._http.post<Autopart>(`${this.url}/file`, autopart);
   }
 
+  addStock (autopart: Autopart): Observable<Autopart> {
+    return this._http.put<Autopart>(`${this.url}/add/${autopart.id}`, autopart);
+  }
+
+  substracStock (autopart: Autopart): Observable<Autopart> {
+    return this._http.put<Autopart>(`${this.url}/substract/${autopart.id}`, autopart);
+  }
+
+  // Creo q no lo uso a este metodo
   readFile(image: File, observer: Subscriber<any>) {
     const filereader = new FileReader();
     filereader.readAsDataURL(image);

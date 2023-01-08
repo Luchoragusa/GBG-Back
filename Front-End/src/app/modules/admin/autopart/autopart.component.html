@@ -7,8 +7,8 @@
     [dismissible]="true"
     [dismissed]="dismissed"
     [name]="'alertBox1'"
-    [type]="'success'">
-    Se guardo correctamente el repuesto.
+    [type]="alertType">
+    {{alertMessage}}
 </fuse-alert>
 
 <div class="flex flex-auto">
@@ -55,7 +55,8 @@
           <button
               class="ml-3"
               mat-flat-button
-              [color]="'primary'">
+              [color]="'primary'"
+              (click)="addStock()">
               <span class="ml-2 mr-1">Agregar 1</span>
           </button>
 
@@ -64,15 +65,16 @@
           <button
               class="ml-3"
               mat-flat-button
-              [color]="'warn'">
+              [color]="'warn'"
+              (click)="substracStock()">
               <span class="ml-2 mr-1">Restar 1</span>
           </button>
 
           <br>
-          <!-- drawer -->
+          <!-- stock -->
           <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
             <mat-label>Stock</mat-label>
-            <input matInput type="text" value = "{{editObject.stock}}" readonly>
+            <input matInput type="number" readonly formControlName = "stock">
           </mat-form-field>
 
           <mat-divider class="mt-6 mb-8"></mat-divider>
@@ -84,7 +86,7 @@
         <!-- typePart -->
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Tipo de repuesto</mat-label>
-          <mat-select [(value)]="selectedPartType">
+          <mat-select [(value)]="selectedPartType" formControlName="partType">
             <mat-option [value]="option.id" *ngFor="let option of partTypes">{{ option.name }}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -108,13 +110,13 @@
         <!-- partModel -->
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Modelo del repuesto</mat-label>
-          <input matInput type="text" placeholder="ME7.4.9" formControlName = "partModel" value="editObject.partModel">
+          <input matInput type="text" placeholder="ME7.4.9" formControlName = "partModel">
         </mat-form-field>
 
         <!-- serialNumber -->
         <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
           <mat-label>Numero de serie</mat-label>
-          <input matInput type="text" placeholder="ME7.4.9" formControlName = "serialNumber" value="editObject.partModel">
+          <input matInput type="text" placeholder="ME7.4.9" formControlName = "serialNumber">
         </mat-form-field>
 
         <!-- stock -->
@@ -145,11 +147,11 @@
         </ng-container>
 
         <!-- Preview de la imagen, renderiza cuando se subio algun archivo -->
-        <!-- <ng-container *ngIf="getBase64()">
-          <button mat-icon-button (click)="viewImage(getBase64())">
+        <ng-container *ngIf="mode()">
+          <button mat-icon-button (click)="viewImage()">
             <i class="fa-solid fa-eye"></i>
           </button>
-        </ng-container> -->
+        </ng-container>
         
         <br>
 
@@ -196,7 +198,7 @@
 
       <mat-form-field class="fuse-mat-bold fuse-mat-dense filtros">
         <mat-label>Tipo de repuesto</mat-label>
-        <mat-select [(value)]="selectedPartType" [formControl]="partTypeFilter">
+        <mat-select [(value)]="selectedPartTypeFilter" [formControl]="partTypeFilter">
           <mat-option [value]="option.name" *ngFor="let option of partTypes" >{{ option.name }}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -208,7 +210,7 @@
 
       <mat-form-field class="fuse-mat-bold fuse-mat-dense filtros">
         <mat-label>Marca del repuesto</mat-label>
-        <mat-select [(value)]="selectedPartBrand" [formControl]="partBrandFilter">
+        <mat-select [(value)]="selectedPartBrandFilter" [formControl]="partBrandFilter">
           <mat-option [value]="option.name" *ngFor="let option of partBrands" >{{ option.name }}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -220,7 +222,7 @@
 
       <mat-form-field class="fuse-mat-bold fuse-mat-dense filtros">
         <mat-label>Marca del auto</mat-label>
-        <mat-select [(value)]="selectedCarBrand" [formControl]="carBrandFilter">
+        <mat-select [(value)]="selectedCarBrandFilter" [formControl]="carBrandFilter">
           <mat-option [value]="option.name" *ngFor="let option of carBrands" >{{ option.name }}</mat-option>
         </mat-select>
       </mat-form-field>

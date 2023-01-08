@@ -22,23 +22,23 @@ export class AlertComponent implements OnInit {
 
     // Parametro del dialog
     this.configForm = this._formBuilder.group({
-      title      : 'Eliminar',
+      title      : 'Información',
       message    : this.message,
       icon       : this._formBuilder.group({
           show : true,
           name : 'heroicons_outline:exclamation',
-          color: 'warn'
+          color: "warn"
       }),
       actions    : this._formBuilder.group({
-          confirm: this._formBuilder.group({
-              show : true,
-              label: 'Eliminar',
-              color: 'warn'
-          }),
-          cancel : this._formBuilder.group({
-              show : true,
-              label: 'Cancelar'
-          })
+        "confirm": {
+          "show": true,
+          "label": "Continuar",
+          "color": "primary"
+        },
+        "cancel": {
+          "show": false,
+          "label": "Cancel"
+        }
       }),
       dismissible: true
     });
