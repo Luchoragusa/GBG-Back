@@ -2,7 +2,6 @@ const {AutoPart, PartType, PartBrand, CarBrand} = require('../database/models/in
 const multer=require('multer');
 
 // Filtro de archivos
-
 const fileFilter=function(req,file,cb){
 
     const allowedTypes=["image/jpg","image/jpeg","image/png"];
@@ -18,7 +17,6 @@ const fileFilter=function(req,file,cb){
 }
 
 // Es donbde se guardan los archivos y el nmobre que van a tener
-
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './GBG-data/images')
@@ -34,7 +32,6 @@ const storage = multer.diskStorage({
 const upload=multer({storage,fileFilter});
 
 // Es la funcion que se va a ejecutar cuando se haga la peticion
-
 exports.upload = upload.single('image')
 
 exports.createAutoPart = async (req, res, next) => {
@@ -60,11 +57,7 @@ exports.createAutoPart = async (req, res, next) => {
 
 exports.getAll = async (req, res, next) => {
     try{
-        const autoParts = await AutoPart.findAll(
-            {
-                include: [{model: PartType}]
-            }
-        );
+        const autoParts = await AutoPart.findAll( {include: [{model: PartType}] });
 
         // Recoorro el array de autoParts y le agrego los objetos de las marcas
 
@@ -86,12 +79,25 @@ exports.getAll = async (req, res, next) => {
                 return await assignation(autoPart, partBrand, carBrand);
             })
         );
-
-
         await res.status(200).json(autoPartsArray);
-        
     } catch (error) {
         res.status(500).json({ msg: 'Error en el servidor' });
+    }
+}
+
+exports.addStock = async (req, res, next) => {
+    try{
+        const { id } = req.params;
+        const autoPart = await AutoPart.findByPk(id);
+        if (autoPart) {
+            const newStock = elemnt.stock + 1;
+            const newAutoPart = await elemnt.update({ stock: newStock });
+            return res.status(200).json({newAutoPart});
+        } else {
+            return res.status(404).json({'msg':'No se recibieron los datos'})
+        }
+    } catch (error) {
+        res.status(500).json({ 'msg': 'Error en el servidor' });
     }
 }
 
