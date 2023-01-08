@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ShowdialogComponent } from './showdialog/showdialog.component';
 import { Autopart } from 'app/core/autopart/autopart';
@@ -92,15 +92,15 @@ export class AutopartComponent  implements OnInit {
     // Create the task form
     this.autoPartForm = this._formBuilder.group({
         id          : [''],
-        partType    : [''],
+        partType    : ['', Validators.required],
         partBrand   : [''],
-        partModel   : [''],
+        partModel   : ['', [Validators.maxLength(25)]],
         carBrand    : [''],
-        serialNumber: [''],
-        description : [''],
-        drawer      : [''],
+        serialNumber: ['', [Validators.maxLength(25)]],
+        description : ['', [Validators.maxLength(200)]],
+        drawer      : ['', [Validators.maxLength(10)]],
         image       : [''],
-        stock       : ['']
+        stock       : ['', [Validators.required, Validators.min(1)]]
     });
 
     // Get all autoparts

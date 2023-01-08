@@ -3,7 +3,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { MatDrawer } from '@angular/material/sidenav';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CarBrand } from 'app/core/car-brand/Car-brand';
 import { CarBrandService } from 'app/core/car-brand/carbrand.service';
 
@@ -41,7 +41,7 @@ export class CarBrandComponent implements OnInit {
     // Create the car brand form
     this.carBrandForm = this._formBuilder.group({
         id          : [''],
-        name        : [''],
+        name        : ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
     });
 
     // Get all de car brands

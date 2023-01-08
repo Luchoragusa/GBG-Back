@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
             validate: {
             len: {
-                args: [3,20],
-                msg: "El nombre debe contener entre 3 a 20 letras"
+                args: [2,20],
+                msg: "El nombre debe contener entre 2 a 20 letras"
             }
             },
         }

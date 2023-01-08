@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PartTypeService } from 'app/core/part-type/parttype.service';
 import { PartType } from 'app/core/part-type/part-type';
 
@@ -38,7 +38,7 @@ export class PartTypeComponent implements OnInit {
     // Create the task form
     this.partTypeForm = this._formBuilder.group({
         id          : [''],
-        name        : [''],
+        name        : ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
     });
     
     // Get all de part types

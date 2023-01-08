@@ -55,11 +55,14 @@
           <mat-form-field class="fuse-mat-bold fuse-mat-dense fuse-mat-rounded">
             <mat-label>Marca del auto</mat-label>
             <input matInput type="text" placeholder="Fiat" formControlName = "name">
+            <mat-error *ngIf="carBrandForm.get('name').hasError('required')">Es requerido el nombre</mat-error>
+            <mat-error *ngIf="carBrandForm.get('name').hasError('minLength')">Como minimo debe tener 2 caracteres</mat-error>
+            <mat-error *ngIf="carBrandForm.get('name').hasError('maxLength')">Como maximo puede tener 20 caracteres</mat-error>
           </mat-form-field>
   
           <div mat-dialog-actions [align]="'end'">
             <button mat-raised-button color="warn" mat-dialog-close (click)="settingsDrawer.close()">Cancelar</button>
-            <button mat-raised-button color="primary" cdkFocusInitial (click)="saveCarBrand()">Guardar</button>
+            <button mat-raised-button color="primary" cdkFocusInitial (click)="saveCarBrand()" type="submit" [disabled]="!carBrandForm.valid">Guardar</button>
           </div>
   
         </form>
