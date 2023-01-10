@@ -99,7 +99,7 @@ export class AutopartComponent  implements OnInit {
         serialNumber: ['', [Validators.maxLength(25)]],
         description : ['', [Validators.maxLength(200)]],
         drawer      : ['', [Validators.required, Validators.maxLength(10)]],
-        image       : [''],
+        image       : ['', [Validators.required]],
         stock       : ['', [Validators.required]]
     });
 
@@ -356,7 +356,8 @@ export class AutopartComponent  implements OnInit {
   }
 
   // Metodo que devuelve bool si el campo es null, lo uso para ver si muestro el ojito de la descripcion
-  getStatus(value : string) {
+  getStatus(value : any) {
+    console.log("🚀 ~ file: autopart.component.ts:360 ~ AutopartComponent ~ getStatus ~ value", value)
     if(value != null){
       return true;
     }else{

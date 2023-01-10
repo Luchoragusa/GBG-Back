@@ -257,20 +257,34 @@
 
         <!-- Part Brand Column -->
         <ng-container matColumnDef="partBrand">
-          <th mat-header-cell *matHeaderCellDef>Marca del repuesto</th>
-          <td mat-cell *matCellDef="let row"> {{row.partBrand.name}} </td>
+            <th mat-header-cell *matHeaderCellDef>Marca del repuesto</th>
+            <td mat-cell *matCellDef="let row"> 
+              <ng-container *ngIf="getStatus(row.partBrand)">
+                {{row.partBrand.name}} 
+              </ng-container>
+              <ng-container *ngIf="!getStatus(row.partBrand)">
+                -
+              </ng-container>
+            </td>
         </ng-container>
     
         <!-- Car Brand Column -->
         <ng-container matColumnDef="carBrand">
           <th mat-header-cell *matHeaderCellDef>Marca de auto</th>
-          <td mat-cell *matCellDef="let row"> {{row.carBrand.name}} </td>
+          <td mat-cell *matCellDef="let row"> 
+            <ng-container *ngIf="getStatus(row.carBrand)">
+              {{row.carBrand.name}} 
+            </ng-container>
+            <ng-container *ngIf="!getStatus(row.carBrand)">
+              -
+            </ng-container>
+          </td>
         </ng-container>
 
         <!-- Part Model Column -->
         <ng-container matColumnDef="partModel">
           <th mat-header-cell *matHeaderCellDef>Modelo</th>
-          <td mat-cell *matCellDef="let row"> {{row.partModel}} </td>
+          <td mat-cell *matCellDef="let row">  {{row.partModel}}  </td>
         </ng-container>
 
         <!-- Serial Number Column -->
