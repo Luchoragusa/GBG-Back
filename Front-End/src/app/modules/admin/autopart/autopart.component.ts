@@ -99,7 +99,7 @@ export class AutopartComponent  implements OnInit {
         serialNumber: ['', [Validators.maxLength(25)]],
         description : ['', [Validators.maxLength(200)]],
         drawer      : ['', [Validators.required, Validators.maxLength(10)]],
-        image       : [''],
+        image       : ['', [Validators.required]],
         stock       : ['', [Validators.required]]
     });
 
@@ -113,7 +113,10 @@ export class AutopartComponent  implements OnInit {
         this.dataSource.filterPredicate = this.createFilter();
       },
       error => {
-        this.setDialog(error.error.msg);
+        if (error.status == 500) {
+          this.setDialog(error.error.msg);
+        }
+        this.setDialog("Error de conexion con el servidor");
       }
     );
 
@@ -356,7 +359,7 @@ export class AutopartComponent  implements OnInit {
   }
 
   // Metodo que devuelve bool si el campo es null, lo uso para ver si muestro el ojito de la descripcion
-  getStatus(value : string) {
+  getStatus(value : any) {
     if(value != null){
       return true;
     }else{
