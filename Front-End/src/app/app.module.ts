@@ -92,7 +92,7 @@ const routerConfig: ExtraOptions = {
         MatSelectModule,
         FuseAlertModule,
         MatToolbarModule,
-        MatProgressBarModule
+        MatProgressBarModule,
     ],
     bootstrap   : [
         AppComponent
