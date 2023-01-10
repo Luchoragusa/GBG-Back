@@ -15,6 +15,7 @@ exports.getAll = Model =>
                 return res.status(404).json({'msg':'No hay datos'})
             }
         } catch (error) {
+            console.log("🚀 ~ file: generic.controller.js:18 ~ error", error)
             res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
         }
     }
@@ -30,6 +31,7 @@ exports.getOne = Model =>
                 return res.status(404).json({'msg':'No hay datos'})
             }
         } catch (error) {
+            console.log("🚀 ~ file: generic.controller.js:34 ~ error", error)
             res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
         }
     }
@@ -47,6 +49,7 @@ exports.deleteOne = Model =>
                 })
             }
         } catch (error) {
+            console.log("🚀 ~ file: generic.controller.js:52 ~ error", error)
             res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
         }
     }
@@ -61,6 +64,7 @@ exports.create = Model =>
                 return res.status(404).json({'msg':'No se recibieron los datos'})
             }
         } catch (error) {
+            console.log("🚀 ~ file: generic.controller.js:67 ~ error", error)
             res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
         }
     }
@@ -78,6 +82,7 @@ exports.update = Model =>
                 return res.status(404).json({msg:"Elemento no encontrado"})
             }
         } catch (error) {
+            console.log("🚀 ~ file: generic.controller.js:85 ~ error", error)
             res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
         }
     }

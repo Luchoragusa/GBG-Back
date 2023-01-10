@@ -78,7 +78,7 @@ exports.createAutoPart = async (req, res, next) => {
             return res.status(404).json({'msg':'No se recibieron los datos'})
         }
     } catch (error) {
-        // console.log("🚀 ~ file: autoPart.controller.js:62 ~ exports.createAutoPart= ~ error", error)
+        console.log("🚀 ~ file: autoPart.controller.js:62 ~ exports.createAutoPart= ~ error", error)
         res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
     }
 }
@@ -108,6 +108,7 @@ exports.getAll = async (req, res, next) => {
         );
         await res.status(200).json(autoPartsArray);
     } catch (error) {
+        console.log("🚀 ~ file: autoPart.controller.js:111 ~ exports.getAll= ~ error", error)
         res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
     }
 }
@@ -125,6 +126,7 @@ exports.addStock = async (req, res, next) => {
             return res.status(404).json({'msg':'No se recibieron los datos'})
         }
     } catch (error) {
+        console.log("🚀 ~ file: autoPart.controller.js:129 ~ exports.addStock= ~ error", error)
         res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
     }
 }
@@ -144,6 +146,7 @@ exports.substractStock = async (req, res, next) => {
             return res.status(404).json({'msg':'No se recibieron los datos'})
         }
     } catch (error) {
+        console.log("🚀 ~ file: autoPart.controller.js:149 ~ exports.substractStock= ~ error", error)
         res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
     }
 }
