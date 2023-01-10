@@ -104,6 +104,7 @@ export class CarBrandComponent implements OnInit {
           this.dataSource._updateChangeSubscription(); // Esto es para que se vea en la tabla
           this.toggleDrawer();
           this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
+          this.buttonStatus = false;
         },
         error => {
           if (error.status == 500) {

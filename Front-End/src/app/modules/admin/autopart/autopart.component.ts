@@ -275,6 +275,7 @@ export class AutopartComponent  implements OnInit {
           // this.dataSource.data.push(data);
           // this.dataSource._updateChangeSubscription();
           this.setAlert(`Se creo el repuesto "${this.autoPartForm.value.partModel}"`, "success");
+          this.buttonStatus = false;
         },
         error => {
           this.setDialog(error.error.msg);
