@@ -40,12 +40,35 @@ exports.createAutoPart = async (req, res, next) => {
         
         req.body.image = req.file.originalname;
 
-        // Seteo null a los campos que no se reciben
-        req.body.partModel = req.body.partModel || null;
-        req.body.serialNumber = req.body.serialNumber || null;
-        req.body.description = req.body.description || null;
-        req.body.idCarBrand = req.body.idCarBrand || null;
-        req.body.idPartBrand = req.body.idPartBrand || null;
+        console.log(req.body.idCarBrand);
+        console.log(req.body.idPartBrand);
+
+        // Seteo null a los campos que no se reciben, lo hago asi porque el form.data pasa el null como un string
+
+        if (req.body.idCarBrand == "null") {
+            req.body.idCarBrand = 0
+        }
+
+        if (req.body.idPartBrand == "null") {
+            req.body.idPartBrand = 0
+        }
+
+        if (req.body.partModel == "null") {
+            req.body.partModel = "-"
+        }
+
+        if (req.body.serialNumber == "null") {
+            req.body.serialNumber = "-"
+        }
+
+        if (req.body.description == "null") {
+            req.body.description = null
+        }
+
+        console.log("=======================================");
+
+        console.log(req.body.idCarBrand);
+        console.log(req.body.idPartBrand);
 
         // Creo el objeto
         const elemnt = await AutoPart.create(req.body);
@@ -55,6 +78,7 @@ exports.createAutoPart = async (req, res, next) => {
             return res.status(404).json({'msg':'No se recibieron los datos'})
         }
     } catch (error) {
+        // console.log("🚀 ~ file: autoPart.controller.js:62 ~ exports.createAutoPart= ~ error", error)
         res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
     }
 }
@@ -79,7 +103,6 @@ exports.getAll = async (req, res, next) => {
                 if (autoPart.idCarBrand) {
                     carBrand = await getOne(CarBrand, autoPart.idCarBrand);
                 }
-
                 return await assignation(autoPart, partBrand, carBrand);
             })
         );
