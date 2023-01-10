@@ -61,7 +61,7 @@
 
         <div mat-dialog-actions [align]="'end'">
           <button mat-raised-button color="warn" mat-dialog-close (click)="toggleDrawer()">Cancelar</button>
-          <button mat-raised-button color="primary" cdkFocusInitial (click)="savePartBrand()" type="submit" [disabled]="!partBrandForm.valid">Guardar</button>
+          <button mat-raised-button color="primary" cdkFocusInitial (click)="savePartBrand()" type="submit" [disabled]="!partBrandForm.valid || buttonStatus">Guardar</button>
         </div>
 
       </form>

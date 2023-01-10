@@ -23,6 +23,7 @@ export class PartTypeComponent implements OnInit {
   dismissed:boolean = true;
   viewAlert:boolean = false;
   isEdit: boolean = false;
+  buttonStatus: boolean = false;
 
   dialogMessage: string = 'Esta seguro que desea eliminarlo ? <span class="font-medium">Al eliminarlo se borraran todos los repuestos vinculados con este tipo.</span>';
 
@@ -49,7 +50,10 @@ export class PartTypeComponent implements OnInit {
         this.dataSource.sort = this.sort;
       },
       error => {
-        this.setDialog(error.error.msg);
+        if (error.status == 500) {
+          this.setDialog(error.error.msg);
+        }
+        this.setDialog("Error de conexion con el servidor");
       }
     );
   }
@@ -68,6 +72,7 @@ export class PartTypeComponent implements OnInit {
       // Update
     }else{
       // Create
+      this.buttonStatus = true;
      const pt = {
         name: this.partTypeForm.value.name
      }
@@ -80,7 +85,10 @@ export class PartTypeComponent implements OnInit {
           this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
         },
         error => {
-          this.setDialog(error.error.msg);
+          if (error.status == 500) {
+            this.setDialog(error.error.msg);
+          }
+          this.setDialog("Error de conexion con el servidor");
         }
       );
     }

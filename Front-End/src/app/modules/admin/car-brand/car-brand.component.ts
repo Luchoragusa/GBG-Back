@@ -23,6 +23,7 @@ export class CarBrandComponent implements OnInit {
   sideTittle: string = 'Agregar marca de auto';
   viewAlert:boolean = false;
   isEdit : boolean = false;
+  buttonStatus : boolean = false;
 
   carBrands : CarBrand[];
 
@@ -54,7 +55,10 @@ export class CarBrandComponent implements OnInit {
         this.dataSource.sort = this.sort;
       },
       error => {
-        this.setDialog(error.error.msg);
+        if (error.status == 500) {
+          this.setDialog(error.error.msg);
+        }
+        this.setDialog("Error de conexion con el servidor");
       }
     );
   }
@@ -90,6 +94,7 @@ export class CarBrandComponent implements OnInit {
       // Update
     }else{
       // Create
+    this.buttonStatus = true;
      const cb = {
         name: this.carBrandForm.value.name
      }
@@ -101,7 +106,10 @@ export class CarBrandComponent implements OnInit {
           this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
         },
         error => {
-          this.setDialog(error.error.msg);
+          if (error.status == 500) {
+            this.setDialog(error.error.msg);
+          }
+          this.setDialog("Error de conexion con el servidor");
         }
       );
     }

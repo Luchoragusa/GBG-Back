@@ -50,6 +50,7 @@ export class AutopartComponent  implements OnInit {
   drawerOpened: boolean;
   sideTittle: string = 'Agregar repuesto';
   isEditAutoPart: boolean = false;
+  buttonStatus: boolean = false;
 
   // ============= Filtro =============
   
@@ -166,7 +167,10 @@ export class AutopartComponent  implements OnInit {
         this.partTypes.unshift({id: "0", name: ""});
       },
       error => {
-        this.setDialog(error.error.msg);
+        if (error.status == 500) {
+          this.setDialog(error.error.msg);
+        }
+        this.setDialog("Error de conexion con el servidor");
       }
     );
 
@@ -176,7 +180,10 @@ export class AutopartComponent  implements OnInit {
         this.carBrands.unshift({id: "0", name: ""});
       },
       error => {
-        this.setDialog(error.error.msg);
+        if (error.status == 500) {
+          this.setDialog(error.error.msg);
+        }
+        this.setDialog("Error de conexion con el servidor");
       }
     );
     
@@ -186,7 +193,10 @@ export class AutopartComponent  implements OnInit {
         this.partBrands.unshift({id: "0", name: ""});
       },
       error => {
-        this.setDialog(error.error.msg);
+        if (error.status == 500) {
+          this.setDialog(error.error.msg);
+        }
+        this.setDialog("Error de conexion con el servidor");
       }
     );
   }
@@ -240,6 +250,7 @@ export class AutopartComponent  implements OnInit {
 
     // Metodo q guarda el formulario
     saveAutoPart() {
+      this.buttonStatus = true;
       var formData = new FormData()
   
       this.autoPartForm.controls['partType'].setValue(this.selectedPartType); // <-- Set Value formControl for select option value (marcaRepuesto)

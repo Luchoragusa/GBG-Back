@@ -22,6 +22,7 @@ export class PartBrandComponent implements OnInit {
   dismissed:boolean = true;
   viewAlert:boolean = false;
   isEdit: boolean = false;
+  buttonStatus: boolean = false;
 
   partBrands : PartBrand[];
 
@@ -52,7 +53,10 @@ export class PartBrandComponent implements OnInit {
         this.dataSource.sort = this.sort;
       },
       error => {
-        this.setDialog(error.error.msg);
+        if (error.status == 500) {
+          this.setDialog(error.error.msg);
+        }
+        this.setDialog("Error de conexion con el servidor");
       }
     );
   }
@@ -71,6 +75,7 @@ export class PartBrandComponent implements OnInit {
       // Update
     }else{
       // Create
+     this.buttonStatus = true;
      const pb = {
         name: this.partBrandForm.value.name
      }
@@ -83,7 +88,10 @@ export class PartBrandComponent implements OnInit {
           this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
         },
         error => {
-          this.setDialog(error.error.msg);
+          if (error.status == 500) {
+            this.setDialog(error.error.msg);
+          }
+          this.setDialog("Error de conexion con el servidor");
         }
       );
     }
