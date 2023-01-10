@@ -113,7 +113,10 @@ export class AutopartComponent  implements OnInit {
         this.dataSource.filterPredicate = this.createFilter();
       },
       error => {
-        this.setDialog(error.error.msg);
+        if (error.status == 500) {
+          this.setDialog(error.error.msg);
+        }
+        this.setDialog("Error de conexion con el servidor");
       }
     );
 
@@ -244,8 +247,6 @@ export class AutopartComponent  implements OnInit {
       this.autoPartForm.controls['carBrand'].setValue(this.selectedCarBrand); // <-- Set Value formControl for select option value (marcaAuto)
   
       formData.append('idPartType', this.autoPartForm.value.partType);
-
-
       formData.append('idPartBrand', this.autoPartForm.value.partBrand);
       formData.append('partModel', this.autoPartForm.value.partModel);
       formData.append('idCarBrand', this.autoPartForm.value.carBrand);
