@@ -244,6 +244,8 @@ export class AutopartComponent  implements OnInit {
       this.autoPartForm.controls['carBrand'].setValue(this.selectedCarBrand); // <-- Set Value formControl for select option value (marcaAuto)
   
       formData.append('idPartType', this.autoPartForm.value.partType);
+
+
       formData.append('idPartBrand', this.autoPartForm.value.partBrand);
       formData.append('partModel', this.autoPartForm.value.partModel);
       formData.append('idCarBrand', this.autoPartForm.value.carBrand);
@@ -357,7 +359,6 @@ export class AutopartComponent  implements OnInit {
 
   // Metodo que devuelve bool si el campo es null, lo uso para ver si muestro el ojito de la descripcion
   getStatus(value : any) {
-    console.log("🚀 ~ file: autopart.component.ts:360 ~ AutopartComponent ~ getStatus ~ value", value)
     if(value != null){
       return true;
     }else{

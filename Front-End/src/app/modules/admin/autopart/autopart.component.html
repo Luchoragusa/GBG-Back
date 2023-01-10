@@ -324,14 +324,9 @@
         <ng-container matColumnDef="image">
           <th mat-header-cell *matHeaderCellDef>Foto</th>
           <td mat-cell *matCellDef="let row"> 
-
-            <!-- Si la imagen tiene valor renderizo el boton, sino no -->
-            <ng-container *ngIf="getStatus(row.image)">  
-              <button mat-icon-button (click)="viewImage(row.image)">
-                <i class="fa-solid fa-eye"></i>
-              </button>
-            </ng-container>
-
+            <button mat-icon-button (click)="viewImage(row.image)">
+              <i class="fa-solid fa-eye"></i>
+            </button>
           </td>
         </ng-container>
 
