@@ -269,11 +269,8 @@ export class AutopartComponent  implements OnInit {
       
       this._autopartService.createAutoPart(formData).subscribe(
         next => {
-  
-          // Esto deberia hacert que se recagrgue la tabla, pero no funca
-  
-          // this.dataSource.data.push(data);
-          // this.dataSource._updateChangeSubscription();
+          // this.dataSource.data.push(next); // Esto es para que se vea en la tabla
+          // this.dataSource._updateChangeSubscription(); // Esto es para que se vea en la tabla
           this.setAlert(`Se creo el repuesto "${this.autoPartForm.value.partModel}"`, "success");
           this.buttonStatus = false;
         },

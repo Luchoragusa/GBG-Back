@@ -22,4 +22,7 @@ export class CarBrandService {
     return this._http.post<CarBrand>(this.url, carBrand);
   }
   
+  updateCarBrand(carBrand: any): Observable<CarBrand> {
+    return this._http.put<CarBrand>(`${this.url}/${carBrand.id}`, carBrand);
+  }
 }

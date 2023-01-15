@@ -70,6 +70,29 @@ export class PartTypeComponent implements OnInit {
   savePartBrand(){
     if(this.isEdit){
       // Update
+      this.buttonStatus = true;
+      const pt = {
+          id: this.partTypeForm.value.id,
+          name: this.partTypeForm.value.name
+      }
+ 
+       this._partTypeService.updatePartType(pt).subscribe(
+         next => {
+           this.dataSource.data.push(next); // Esto es para que se vea en la tabla
+           this.dataSource._updateChangeSubscription(); // Esto es para que se vea en la tabla
+           this.toggleDrawer();
+           this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
+           this.buttonStatus = false;
+           this.isEdit = false;  
+         },
+         error => {
+           if (error.status == 500) {
+             this.setDialog(error.error.msg);
+           }
+           this.setDialog("Error de conexion con el servidor");
+           this.isEdit = false; 
+         }
+       );
     }else{
       // Create
       this.buttonStatus = true;
@@ -111,13 +134,6 @@ export class PartTypeComponent implements OnInit {
     if (!this.drawerOpened) {
       this.sideTittle = "Agregar tipo de repuesto";
     }
-  }
-
-  delete(data : any) {
-    this.viewAlert = true; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
-
-    // Depues tengo q hacer q se ponga en false, sino no abre mas el dialog
-    // this.viewAlert = false;
   }
 
   getViewAlert(){

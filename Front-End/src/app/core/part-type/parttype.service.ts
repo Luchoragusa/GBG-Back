@@ -22,5 +22,9 @@ export class PartTypeService {
   createPartType(partType: any): Observable<PartType> {
     return this._http.post<PartType>(this.url, partType);
   }
-  
+
+  updatePartType(partType: any): Observable<PartType> {
+    return this._http.put<PartType>(`${this.url}/${partType.id}`, partType);
+  }
+
 }

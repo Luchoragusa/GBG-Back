@@ -87,11 +87,37 @@ export class CarBrandComponent implements OnInit {
       id: carBrand.id,
       name: carBrand.name,
     });
+    
+    // seteo el true para decir q estoy en edicion
+    this.isEdit = true;
   }
 
   saveCarBrand(){
     if(this.isEdit){
       // Update
+      this.buttonStatus = true;
+      const cb = {
+          id: this.carBrandForm.value.id,
+          name: this.carBrandForm.value.name
+      }
+       this._carBrandService.updateCarBrand(cb).subscribe(
+         next => {
+            this.dataSource.data.push(next); // Esto es para que se vea en la tabla
+            this.dataSource._updateChangeSubscription(); // Esto es para que se vea en la tabla
+            this.toggleDrawer();
+            this.dismissed = false; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
+            this.buttonStatus = false;
+            this.isEdit = false;
+         },
+         error => {
+           if (error.status == 500) {
+             this.setDialog(error.error.msg);
+           }
+           console.log("Hola!");
+           this.setDialog("Error de conexion con el servidor");
+           this.isEdit = false;
+         }
+       );
     }else{
       // Create
     this.buttonStatus = true;
@@ -114,13 +140,6 @@ export class CarBrandComponent implements OnInit {
         }
       );
     }
-  }
-
-  delete(carBrand : CarBrand) {
-    this.viewAlert = true; // Esto muestra la alerta, hacer que lo haga despues de que se registra en la db
-
-    // Depues tengo q hacer q se ponga en false, sino no abre mas el dialog
-    // this.viewAlert = false;
   }
 
   getViewAlert(){
