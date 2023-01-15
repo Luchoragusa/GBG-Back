@@ -40,9 +40,6 @@ exports.createAutoPart = async (req, res, next) => {
         
         req.body.image = req.file.originalname;
 
-        console.log(req.body.idCarBrand);
-        console.log(req.body.idPartBrand);
-
         // Seteo null a los campos que no se reciben, lo hago asi porque el form.data pasa el null como un string
 
         if (req.body.idCarBrand == "null") {
@@ -65,15 +62,11 @@ exports.createAutoPart = async (req, res, next) => {
             req.body.description = null
         }
 
-        console.log("=======================================");
-
-        console.log(req.body.idCarBrand);
-        console.log(req.body.idPartBrand);
-
         // Creo el objeto
         const elemnt = await AutoPart.create(req.body);
         if (elemnt) {
-            return res.status(201).json({elemnt})
+            const elementCreated = await getAfterCreate(elemnt);
+            return res.status(201).json(elementCreated);
         } else {
             return res.status(404).json({'msg':'No se recibieron los datos'})
         }
@@ -95,13 +88,23 @@ exports.getAll = async (req, res, next) => {
 
                 var partBrand = null;
                 var carBrand = null;
-                
+
                 if (autoPart.idPartBrand) {
                     partBrand = await getOne(PartBrand, autoPart.idPartBrand);
+                } else {
+                    partBrand = {
+                        id: 0,
+                        name: '-'
+                    }
                 }
 
                 if (autoPart.idCarBrand) {
                     carBrand = await getOne(CarBrand, autoPart.idCarBrand);
+                } else {
+                    carBrand = {
+                        id: 0,
+                        name: '-'
+                    }
                 }
                 return await assignation(autoPart, partBrand, carBrand);
             })
@@ -170,4 +173,30 @@ assignation = async (autoPart, partBrand, carBrand) => {
         partBrand:      partBrand,
         carBrand:       carBrand,
     }
+}
+
+getAfterCreate = async (autoPart) => {
+    autoPart.image = `${process.env.URL}/${autoPart.image}`
+
+    var partBrand = null;
+    var carBrand = null;
+
+    if (autoPart.idPartBrand) {
+        partBrand = await getOne(PartBrand, autoPart.idPartBrand);
+    } else {
+        partBrand = {
+            id: 0,
+            name: '-'
+        }
+    }
+
+    if (autoPart.idCarBrand) {
+        carBrand = await getOne(CarBrand, autoPart.idCarBrand);
+    } else {
+        carBrand = {
+            id: 0,
+            name: '-'
+        }
+    }
+    return await assignation(autoPart, partBrand, carBrand);
 }

@@ -6,4 +6,5 @@ const {getAll, getOne, create, deleteOne, update} = require('../../controllers/g
 // Genericas
 router.post('/', create(CarBrand)); 
 router.get('/', getAll(CarBrand));
+router.put('/:id', update(CarBrand));
 module.exports = router;

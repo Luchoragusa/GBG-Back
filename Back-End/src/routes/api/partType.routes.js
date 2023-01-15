@@ -7,4 +7,5 @@ const {getAll, getOne, create, deleteOne, update} = require('../../controllers/g
 // Genericas
 router.post('/', create(PartType)); // Crea un una marca de repuesto
 router.get('/', getAll(PartType)); // Obtiene todas las marcas de repuestos
+router.put('/:id', update(PartType));
 module.exports = router;

@@ -72,11 +72,12 @@ exports.create = Model =>
 exports.update = Model =>
     async (req, res, next) => {
         try {
+            const id = req.params.id;
             const params = req.body;
             let elemnt = await Model.findByPk(id);
             if (id) {
                 elemnt.update(params).then(elemnt => {
-                  res.status(201).json({status:201,elemnt, 'msg':'Editado correctamente'})
+                  res.status(201).json(elemnt)
                 })
             } else {
                 return res.status(404).json({msg:"Elemento no encontrado"})
