@@ -207,11 +207,11 @@ export class AutopartComponent  implements OnInit {
       let searchTerms = JSON.parse(filter);
       
       var dataParse = {
-        partType: data.partType.name || "-",
-        partBrand: data.partBrand.name || "-",
-        partModel: data.partModel || "-",
-        carBrand: data.carBrand.name || "-",
-        serialNumber: data.serialNumber || "-"
+        partType: data.partType.name,
+        partModel: data.partModel,
+        serialNumber: data.serialNumber,
+        partBrand: data.partBrand.name,
+        carBrand: data.carBrand.name
       }
 
       return dataParse.partType.toLowerCase().indexOf(searchTerms.partType) !== -1
