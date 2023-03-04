@@ -3,7 +3,7 @@ const http = require('http').createServer(app);
 const {sequelize} = require('./database/models/index');
 
 const PORT = process.env.PORT || 3000;
-
+// test
 http.listen(PORT, () => {
     console.log(`Running on a port: ${PORT}`);
     sequelize.sync({ force: false }).then(() => { // Si pongo el force en true se crean las tablas de nuevo
