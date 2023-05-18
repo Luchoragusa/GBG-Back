@@ -29,8 +29,6 @@ const login = async (req, res) => {
         if (user) {
           if (bcrypt.compareSync(password, user.password)) {
             const token = createToken(user)
-            console.log("🚀 ~ file: user.controller.js:32 ~ .then ~ token:", token)
-            
             res.cookie('jwt', token, { httpOnly: true, secure: true })
             return res.status(200).json({ msg: { token, user } })
           } else {

@@ -1,7 +1,7 @@
 
 const jwt = require('jwt-simple')
 const moment = require('moment')
-const { Usuario, Rol } = require('../database/models/index')
+const { User } = require('../database/models/index')
 const { getId } = require('./util')
 
 const validateToken = [
@@ -24,7 +24,7 @@ const validateToken = [
     }
 
     try {
-      await Usuario.findOne({ where: { id: payload.userId } })
+      await User.findOne({ where: { id: payload.userId } })
         .then((user) => {
           if (user) {
             // Valido el tiempo de expiración del token
@@ -44,18 +44,18 @@ const validateToken = [
   }
 ]
 
-const policy = [
-  async (req, res, next) => {
-    const role = await Rol.findOne({ where: { descripcion: 'Admin' } })
-    const user = await Usuario.findOne({ where: { id: getId } })
-    if (user.idRol !== role.id) {
-      res.status(401).json({ msg: 'No autorizado, tenes que ser admin' })
-    }
-    next()
-  }
-]
+// const policy = [
+//   async (req, res, next) => {
+//     const role = await Rol.findOne({ where: { descripcion: 'Admin' } })
+//     const user = await Usuario.findOne({ where: { id: getId } })
+//     if (user.idRol !== role.id) {
+//       res.status(401).json({ msg: 'No autorizado, tenes que ser admin' })
+//     }
+//     next()
+//   }
+// ]
 
 module.exports = {
   validateToken,
-  policy
+  // policy
 }

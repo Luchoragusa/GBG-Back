@@ -1,9 +1,9 @@
 const Router = require('express')
 const router = Router()
 const { register, login } = require('../../controllers/user.controller')
-const { validateToken, policy } = require('../../utilities/middleware')
+const { validateToken } = require('../../utilities/middleware')
 
-router.get('/', validateToken, policy, (req, res) => {
+router.get('/', validateToken, (req, res) => {
   res.status(200).json({ message: 'Hola' })
 })
 
