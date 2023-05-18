@@ -1,6 +1,9 @@
 const Router = require('express');
 const router = Router();
 
+const apiUser = require('./api/user.routes');
+router.use('/users', apiUser);
+
 const apiAutoPart = require('./api/autoPart.routes');
 router.use('/autoparts', apiAutoPart);
 
