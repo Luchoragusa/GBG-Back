@@ -12,10 +12,10 @@ http.listen(PORT, () => {
         console.log('Database connected'); 
     })
     
-    .then (() => {
-        console.log(user)
-        User.create(user)
-    })
+    // .then (() => {
+    //     console.log(user)
+    //     User.create(user)
+    // })
 
     .catch((err) => {
         console.log('Database error', err);

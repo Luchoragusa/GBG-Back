@@ -12,7 +12,6 @@ const createToken = (u) => {
   const payload = {
     userId: u.id,
     email: u.email,
-    idRol: u.idRol,
     createdAt: moment().unix(),
     expiredAt: moment().add(1, 'hour').unix()
   }

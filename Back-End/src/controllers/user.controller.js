@@ -4,9 +4,6 @@ const { createToken } = require('../utilities/util')
 
 const register = async (req, res) => {
   const userNew = req.body
-  console.log("🚀 ~ file: user.controller.js:7 ~ register ~ userNew:", userNew)
-  
-
   try {
     // Valido que el mail no exista en la DB
     await User.findOne({ where: { email: userNew.email } })
@@ -26,13 +23,14 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body
-  console.log(req.body)
   try {
     await User.findOne({ where: { email } })
       .then((user) => {
         if (user) {
           if (bcrypt.compareSync(password, user.password)) {
             const token = createToken(user)
+            console.log("🚀 ~ file: user.controller.js:32 ~ .then ~ token:", token)
+            
             res.cookie('jwt', token, { httpOnly: true, secure: true })
             return res.status(200).json({ msg: { token, user } })
           } else {
