@@ -23,6 +23,7 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body
+  console.log(req.body)
   try {
     await User.findOne({ where: { email } })
       .then((user) => {
@@ -44,15 +45,12 @@ const login = async (req, res) => {
 const getOne = async (req, res) => {
   const { id } = req.params
   try {
-    await User.findOne(    
-      {
-        attributes: { exclude: ["password"] },
-      },
-      { where: { id } })
-      .then((user) => {
+    await User.findOne({
+      where: { id },
+      attributes: { exclude: ['password'] }
+    }).then((user) => {
         if (user) {
-          console.log(user)
-          return res.status(200).json({ user })
+          return res.status(200).json(user)
         } else {
           return res.status(404).json({ message: 'Usuario no encontrado' })
         }
@@ -60,6 +58,7 @@ const getOne = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error })
   }
+}
 
 // const logOut = async (req, res, next) => {
 //   //Eliminar cookie jwt

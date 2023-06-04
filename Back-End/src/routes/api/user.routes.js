@@ -10,6 +10,6 @@ router.get('/', validateToken, (req, res) => {
 //  Especificas
 router.post('/register', register) // Registrar un usuario en la DB
 router.post('/login', login) // crea uno
-router.get('/:id', validateToken, getOne) // obtiene uno
+router.get('/:id', /*validateToken, */getOne) // obtiene uno
 
 module.exports = router
