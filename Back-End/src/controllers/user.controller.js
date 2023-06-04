@@ -41,6 +41,26 @@ const login = async (req, res) => {
   }
 }
 
+const getOne = async (req, res) => {
+  const { id } = req.params
+  try {
+    await User.findOne(    
+      {
+        attributes: { exclude: ["password"] },
+      },
+      { where: { id } })
+      .then((user) => {
+        if (user) {
+          console.log(user)
+          return res.status(200).json({ user })
+        } else {
+          return res.status(404).json({ message: 'Usuario no encontrado' })
+        }
+      })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+
 // const logOut = async (req, res, next) => {
 //   //Eliminar cookie jwt
 //   res.clearCookie('jwt')
@@ -50,5 +70,6 @@ const login = async (req, res) => {
 
 module.exports = {
   register,
-  login
+  login,
+  getOne
 }
