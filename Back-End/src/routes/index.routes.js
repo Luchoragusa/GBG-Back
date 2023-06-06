@@ -1,19 +1,20 @@
 const Router = require('express');
 const router = Router();
+const { validateToken } = require('../utilities/middleware')
 
 const apiUser = require('./api/user.routes');
 router.use('/users', apiUser);
 
 const apiAutoPart = require('./api/autoPart.routes');
-router.use('/autoparts', apiAutoPart);
+router.use('/autoparts', validateToken, apiAutoPart);
 
 const apiPartBrand = require('./api/partBrand.routes');
-router.use('/partbrands', apiPartBrand);
+router.use('/partbrands', validateToken, apiPartBrand);
 
 const apiPartType = require('./api/partType.routes');
-router.use('/parttypes', apiPartType);
+router.use('/parttypes', validateToken, apiPartType);
 
 const apiCarBrand = require('./api/carBrand.routes');
-router.use('/carbrands', apiCarBrand);
+router.use('/carbrands', validateToken, apiCarBrand);
 
 module.exports = router;
