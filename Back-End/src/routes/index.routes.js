@@ -17,4 +17,7 @@ router.use('/parttypes', validateToken, apiPartType);
 const apiCarBrand = require('./api/carBrand.routes');
 router.use('/carbrands', validateToken, apiCarBrand);
 
+const apiDashboard = require('./api/dashboard.routes');
+router.use('/dashboard', validateToken, apiDashboard);
+
 module.exports = router;
