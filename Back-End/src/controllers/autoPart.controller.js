@@ -116,6 +116,52 @@ exports.getAll = async (req, res, next) => {
     }
 }
 
+exports.getAmount = async (req, res, next) => {
+    const amount = Number(req.params.amount);
+    try{
+        const autoParts = await AutoPart.findAll({
+            order: [['updatedAt', 'DESC']], // Ordena por la columna 'updatedAt' en orden descendente
+            limit: amount, // Limita el resultado a 5 filas
+            include: [{model: PartType}] // Incluye el modelo 'PartType' en la consulta
+          })
+
+        console.log (autoParts)
+        // Recoorro el array de autoParts y le agrego los objetos de las marcas
+
+        const autoPartsArray = await Promise.all(
+            autoParts.map(async (autoPart) => {
+                autoPart.image = `${process.env.URL}/${autoPart.image}`
+
+                var partBrand = null;
+                var carBrand = null;
+
+                if (autoPart.idPartBrand) {
+                    partBrand = await getOne(PartBrand, autoPart.idPartBrand);
+                } else {
+                    partBrand = {
+                        id: 0,
+                        name: '-'
+                    }
+                }
+
+                if (autoPart.idCarBrand) {
+                    carBrand = await getOne(CarBrand, autoPart.idCarBrand);
+                } else {
+                    carBrand = {
+                        id: 0,
+                        name: '-'
+                    }
+                }
+                return await assignation(autoPart, partBrand, carBrand);
+            })
+        );
+        await res.status(200).json(autoPartsArray);
+    } catch (error) {
+        console.log("🚀 ~ file: autoPart.controller.js:159 ~ exports.getAmount= ~ error", error)
+        res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
+    }
+}
+
 exports.addStock = async (req, res, next) => {
     try{
         const { id } = req.params;

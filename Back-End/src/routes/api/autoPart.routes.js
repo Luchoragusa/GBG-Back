@@ -1,7 +1,7 @@
 const Router = require('express');
 const router = Router();
 const { AutoPart } = require('../../database/models/index');
-const { upload, createAutoPart, getAll, addStock, substractStock } = require('../../controllers/autoPart.controller');
+const { upload, createAutoPart, getAll, addStock, substractStock, getAmount } = require('../../controllers/autoPart.controller');
 const { getOne, deleteOne} = require('../../controllers/generic.controller');
 
 
@@ -10,6 +10,7 @@ const { getOne, deleteOne} = require('../../controllers/generic.controller');
 // Especificas
 router.post('/file',  upload, createAutoPart);
 router.get('/', getAll);
+router.get('/:amount', getAmount);
 router.put('/add/:id', addStock);
 router.put('/substract/:id', substractStock);
 
