@@ -7,10 +7,10 @@ exports.getTotal = async (req, res, next) => {
     let totalObj = [];
 
     await Promise.all(models.map(async (model) => {
-      const tot = await model.count();
+    
       const obj = {
-        model: model.name,
-        total: tot
+        model: getName(model),
+        total: await model.count()
       };
       totalObj.push(obj);
     }));
@@ -19,5 +19,20 @@ exports.getTotal = async (req, res, next) => {
   } catch (error) {
       console.log("🚀 ~ file: autoPart.controller.js:21 ~ exports.getTotal= ~ error", error)
       res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
+  }
+}
+
+function getName(model){
+  switch(model.name){
+    case 'AutoPart':
+      return 'Repuestos';
+    case 'PartType':
+      return 'Tipos de repuestos';
+    case 'PartBrand':
+      return 'Marcas de repuestos';
+    case 'CarBrand':
+      return 'Marcas de autos';
+    default:
+      return 'ERROR';
   }
 }
