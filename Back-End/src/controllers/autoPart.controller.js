@@ -218,6 +218,8 @@ assignation = async (autoPart, partBrand, carBrand) => {
         partType:       autoPart.PartType,
         partBrand:      partBrand,
         carBrand:       carBrand,
+        createdAt:      autoPart.createdAt,
+        updatedAt:      autoPart.updatedAt
     }
 }
 
