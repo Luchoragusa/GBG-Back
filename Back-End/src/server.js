@@ -8,7 +8,6 @@ const {json} = require('body-parser');
 //Requerir router
 const router = require('./routes/index.routes');
 
-
 //Settings
 app.use(cors());
 app.use(express.json());
