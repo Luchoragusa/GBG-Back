@@ -42,14 +42,6 @@ exports.createAutoPart = async (req, res, next) => {
 
         // Seteo null a los campos que no se reciben, lo hago asi porque el form.data pasa el null como un string
 
-        if (req.body.idCarBrand == "null") {
-            req.body.idCarBrand = 0
-        }
-
-        if (req.body.idPartBrand == "null") {
-            req.body.idPartBrand = 0
-        }
-
         if (req.body.partModel == "null") {
             req.body.partModel = "-"
         }
@@ -61,7 +53,6 @@ exports.createAutoPart = async (req, res, next) => {
         if (req.body.description == "null") {
             req.body.description = null
         }
-
         // Creo el objeto
         const elemnt = await AutoPart.create(req.body);
         if (elemnt) {
