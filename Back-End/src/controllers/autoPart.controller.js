@@ -37,7 +37,6 @@ exports.upload = upload.single('image')
 exports.createAutoPart = async (req, res, next) => {
     try{
         // Le seteo la ruta de la  imagen al objeto que voy a crear
-        
         req.body.image = req.file.originalname;
 
         // Seteo null a los campos que no se reciben, lo hago asi porque el form.data pasa el null como un string
@@ -50,14 +49,57 @@ exports.createAutoPart = async (req, res, next) => {
             req.body.serialNumber = "-"
         }
 
-        if (req.body.description == "null") {
+        if (req.body.description == "null" || req.body.description == "-") {
             req.body.description = null
         }
+        
         // Creo el objeto
         const elemnt = await AutoPart.create(req.body);
         if (elemnt) {
             const elementCreated = await getAfterCreate(elemnt);
             return res.status(201).json(elementCreated);
+        } else {
+            return res.status(404).json({'msg':'No se recibieron los datos'})
+        }
+    } catch (error) {
+        console.log("🚀 ~ file: autoPart.controller.js:62 ~ exports.createAutoPart= ~ error", error)
+        res.status(500).json({ 'msg': 'Error en el servidor, contacte con <strong>Luciano Ragusa</strong> 🙂' });
+    }
+}
+
+exports.editAutoPart = async (req, res, next) => {
+    try{
+        const id = req.params.id;
+        const element = await AutoPart.findByPk(id);
+        if (element) {
+            req.body.image = element.image;
+            req.body.idPartBrand = req.body.partBrand
+            req.body.idPartType = req.body.partType
+            req.body.idCarBrand = req.body.carBrand
+
+            console.log("🚀 ~ file: autoPart.controller.js:62 ~ exports.createAutoPart= ~ req.body", req.body)
+            // Seteo null a los campos que no se reciben, lo hago asi porque el form.data pasa el null como un string
+            if (req.body.partModel == "null") {
+                req.body.partModel = "-"
+            }
+    
+            if (req.body.serialNumber == "null") {
+                req.body.serialNumber = "-"
+            }
+    
+            if (req.body.description == "null" || req.body.description == "-") {
+                req.body.description = null
+            }
+
+            if (req.body.partType == "null" || req.body.description == "-") {
+                req.body.description = null
+            }
+
+            const elementUpdated = await AutoPart.update(req.body, { where: { id } });
+            if (elementUpdated) {
+                const elementUpdated = await getAfterCreate(req.body);
+                return res.status(201).json(elementUpdated);
+            }
         } else {
             return res.status(404).json({'msg':'No se recibieron los datos'})
         }
