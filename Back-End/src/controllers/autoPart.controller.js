@@ -124,8 +124,6 @@ exports.getAmount = async (req, res, next) => {
             limit: amount, // Limita el resultado a 5 filas
             include: [{model: PartType}] // Incluye el modelo 'PartType' en la consulta
           })
-
-        console.log (autoParts)
         // Recoorro el array de autoParts y le agrego los objetos de las marcas
 
         const autoPartsArray = await Promise.all(
