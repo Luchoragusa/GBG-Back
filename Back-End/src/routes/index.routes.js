@@ -20,4 +20,7 @@ router.use('/carbrands', validateToken, apiCarBrand);
 const apiDashboard = require('./api/dashboard.routes');
 router.use('/dashboard', validateToken, apiDashboard);
 
+const apiLogs = require('./api/logs.routes');
+router.use('/logs', validateToken, apiLogs);
+
 module.exports = router;

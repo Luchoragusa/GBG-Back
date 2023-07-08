@@ -1,3 +1,5 @@
+const { saveLog } = require("../utilities/util");
+
 exports.getAll = Model =>
     async (req, res, next) => {
         try{
@@ -58,6 +60,7 @@ exports.create = Model =>
         try {
             const elemnt = await Model.create(req.body);
             if (elemnt) {
+                saveLog(Model, 'create', req.userId, elemnt.id)
                 return res.status(201).json(elemnt)
             } else {
                 return res.status(404).json({'msg':'No se recibieron los datos'})

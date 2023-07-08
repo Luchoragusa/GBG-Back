@@ -1,5 +1,6 @@
 const jwt = require('jwt-simple')
 const moment = require('moment')
+const { Log } = require('../database/models/index')
 
 const getId = (req) => {
   const userToken = req.headers['user-token']
@@ -18,7 +19,19 @@ const createToken = (u) => {
   return jwt.encode(payload, process.env.SECRET_KEY)
 }
 
+const saveLog = (Model, type, idUser, idModel) => {
+  Log.create({
+    type: type,
+    modelName: Model.name,
+    idModel,
+    idUser
+  })
+
+  console.log('Log saved')
+}
+
 module.exports = {
   getId,
-  createToken
+  createToken,
+  saveLog
 }
