@@ -46,7 +46,8 @@ exports.deleteOne = Model =>
                 return res.status(404).json({msg:"Elemento no encontrado"})
             } else {
                 elemnt.destroy().then(elemnt => {
-                return res.status(200).json({'status':200,elemnt, 'msg':'Eliminado correctamente'})
+                    saveLog(Model, 'delete', req.userId, elemnt.id)
+                    return res.status(200).json({'status':200,elemnt, 'msg':'Eliminado correctamente'})
                 })
             }
         } catch (error) {
@@ -79,7 +80,8 @@ exports.update = Model =>
             let elemnt = await Model.findByPk(id);
             if (id) {
                 elemnt.update(params).then(elemnt => {
-                  res.status(201).json(elemnt)
+                    saveLog(Model, 'update', req.userId, elemnt.id)
+                    res.status(201).json(elemnt)
                 })
             } else {
                 return res.status(404).json({msg:"Elemento no encontrado"})

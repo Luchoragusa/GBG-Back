@@ -20,14 +20,34 @@ const createToken = (u) => {
 }
 
 const saveLog = (Model, type, idUser, idModel) => {
-  Log.create({
-    type: type,
-    modelName: Model.name,
-    idModel,
-    idUser
-  })
 
-  console.log('Log saved')
+  let log = {
+    type: type,
+    idUser: idUser,
+    idAutoPart: null,
+    idPartBrand: null,
+    idPartType: null,
+    idCarBrand: null
+  }
+
+  switch (Model.name) {
+    case 'AutoPart':
+      log.idAutoPart = idModel
+      break
+    case 'PartBrand':
+      log.idPartBrand = idModel
+      break
+    case 'PartType':
+      log.idPartType = idModel
+      break
+    case 'CarBrand':
+      log.idCarBrand = idModel
+      break
+    default:
+      break
+  }
+
+  Log.create( log )
 }
 
 module.exports = {

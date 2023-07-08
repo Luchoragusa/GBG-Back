@@ -1,5 +1,6 @@
 const {AutoPart, PartType, PartBrand, CarBrand} = require('../database/models/index');
 const multer=require('multer');
+const { saveLog } = require("../utilities/util");
 
 // Filtro de archivos
 const fileFilter=function(req,file,cb){
@@ -57,6 +58,7 @@ exports.createAutoPart = async (req, res, next) => {
         const elemnt = await AutoPart.create(req.body);
         if (elemnt) {
             const elementCreated = await getAfterCreate(elemnt);
+            saveLog(AutoPart, 'create', req.userId, elemnt.id)
             return res.status(201).json(elementCreated);
         } else {
             return res.status(404).json({'msg':'No se recibieron los datos'})
@@ -98,6 +100,7 @@ exports.editAutoPart = async (req, res, next) => {
             const elementUpdated = await AutoPart.update(req.body, { where: { id } });
             if (elementUpdated) {
                 const elementUpdated = await getAfterCreate(req.body);
+                saveLog(AutoPart, 'update', req.userId, elemnt.id)
                 return res.status(201).json(elementUpdated);
             }
         } else {
@@ -200,6 +203,7 @@ exports.addStock = async (req, res, next) => {
 
         if (autoPart) {
             const newStock = autoPart.stock + 1;
+            saveLog(AutoPart, 'AddStock', req.userId, elemnt.id)
             const newAutoPart = await autoPart.update({ stock: newStock });
             return res.status(200).json(newAutoPart);
         } else {
@@ -220,6 +224,7 @@ exports.substractStock = async (req, res, next) => {
                 return res.status(404).json({'msg':'No hay stock del repuesto <strong> ' + autoPart.partModel + ' </strong>'})
             }
             const newStock = autoPart.stock - 1;
+            saveLog(AutoPart, 'SubstractStock', req.userId, elemnt.id)
             const newAutoPart = await autoPart.update({ stock: newStock });
             return res.status(200).json(newAutoPart);
         } else {
