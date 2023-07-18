@@ -1,0 +1,5 @@
+Crear un archivo seed
+-> sequelize seed:generate --name userSeed
+
+Correr los seed en ORDEN
+-> sequelize db:seed --seed 20230518004347-userSeed
