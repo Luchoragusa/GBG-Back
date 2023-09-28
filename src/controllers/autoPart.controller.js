@@ -203,7 +203,7 @@ exports.addStock = async (req, res, next) => {
 
         if (autoPart) {
             const newStock = autoPart.stock + 1;
-            saveLog(AutoPart, 'AddStock', req.userId, elemnt.id)
+            saveLog(AutoPart, 'AddStock', req.userId, autoPart.id)
             const newAutoPart = await autoPart.update({ stock: newStock });
             return res.status(200).json(newAutoPart);
         } else {
@@ -224,7 +224,7 @@ exports.substractStock = async (req, res, next) => {
                 return res.status(404).json({'msg':'No hay stock del repuesto <strong> ' + autoPart.partModel + ' </strong>'})
             }
             const newStock = autoPart.stock - 1;
-            saveLog(AutoPart, 'SubstractStock', req.userId, elemnt.id)
+            saveLog(AutoPart, 'SubstractStock', req.userId, autoPart.id)
             const newAutoPart = await autoPart.update({ stock: newStock });
             return res.status(200).json(newAutoPart);
         } else {
